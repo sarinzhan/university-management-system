@@ -1,0 +1,74 @@
+package com.example.universitymanagementsystem.entity.applyment;
+
+import com.example.universitymanagementsystem.entity.BaseEntity;
+import com.example.universitymanagementsystem.entity.uni_struct.Department;
+import com.example.universitymanagementsystem.entity.uni_struct.Faculty;
+import com.example.universitymanagementsystem.entity.uni_struct.Specialty;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
+@Entity(name = "applicant_application")
+@NoArgsConstructor
+@Data
+@AllArgsConstructor
+public class ApplicantApplication extends BaseEntity {
+    private ApplicantApplicationStatus status;
+
+    @Column(name = "application_date")
+    private LocalDateTime createdDate;
+
+    @Column(name = "test_score")
+    private Integer testScore;
+
+    @ManyToOne
+    @JoinColumn(name = "specialty_admission_id")
+    private SpecialtyAdmission specialtyAdmission;
+    @ManyToOne
+    @JoinColumn(name = "specialty_id")
+    private Specialty specialty;
+
+    @ManyToOne
+    @JoinColumn(name = "faculty_id")
+    private Faculty faculty;
+
+    @ManyToOne
+    @JoinColumn(name = "department_id")
+    private Department department;
+
+    @Column(name = "personal_number")
+    private Long personalNumber;
+
+    private String email;
+    private String nationality;
+
+    @Column(name = "telegram_account")
+    private String telegramAccount;
+
+    @Column(name = "passport_id")
+    private Long passportId;
+
+    private String country;
+
+    private String city;
+
+    @Column(name = "date_of_birth")
+    private LocalDateTime dateOfBirth;
+
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "middle_name")
+    private String middleName;
+
+    @Column(name = "last_name")
+    private String lastName;
+
+}
