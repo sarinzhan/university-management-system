@@ -29,28 +29,26 @@ public class ApplicantApplication extends BaseEntity {
     private Integer testScore;
 
     @ManyToOne
-    @JoinColumn(name = "specialty_admission_id")
+    @JoinColumn(name = "specialty_admission_id",nullable = false)
     private SpecialtyAdmission specialtyAdmission;
     @ManyToOne
-    @JoinColumn(name = "specialty_id")
+    @JoinColumn(name = "specialty_id",nullable = false)
     private Specialty specialty;
 
     @ManyToOne
-    @JoinColumn(name = "faculty_id")
+    @JoinColumn(name = "faculty_id",nullable = false)
     private Faculty faculty;
 
     @ManyToOne
-    @JoinColumn(name = "department_id")
+    @JoinColumn(name = "department_id",nullable = false)
     private Department department;
 
-    @Column(name = "personal_number")
+    @Column(name = "personal_number",nullable = false)
     private Long personalNumber;
-
+    @Column(nullable = false)
     private String email;
     private String nationality;
 
-    @Column(name = "telegram_account")
-    private String telegramAccount;
 
     @Column(name = "passport_id")
     private Long passportId;
