@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/verification-token")
 public class VerificationController {
     public static void main(String[] args) {
-
+            int a = 1;
     }
 }
