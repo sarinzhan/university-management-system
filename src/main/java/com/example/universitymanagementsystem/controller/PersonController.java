@@ -1,8 +1,8 @@
 package com.example.universitymanagementsystem.controller;
 
 import com.example.universitymanagementsystem.dto.response.PersonFullNameDto;
-import com.example.universitymanagementsystem.mapper.PersonFullNameDtoMapper;
 import com.example.universitymanagementsystem.exception.PersonNotFoundException;
+import com.example.universitymanagementsystem.mapper.PersonFullNameMapper;
 import com.example.universitymanagementsystem.service.PersonService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +21,7 @@ public class PersonController {
 
     @GetMapping(name = "/findByPN")
     public PersonFullNameDto findByPN(@RequestParam Long pn) throws PersonNotFoundException {
-        return PersonFullNameDtoMapper.entityToDto(
+        return PersonFullNameMapper.INSTANCE.entityToDto(
                 personService
                         .findByPN(pn)
         );

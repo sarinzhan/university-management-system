@@ -12,7 +12,8 @@ import java.util.List;
 
 @Entity(name = "users")
 @Data
-public class User extends BaseEntity implements UserDetails {
+public class User extends BaseEntity implements UserDetails{
+
     @ManyToOne
     @JoinColumn(name = "user_role_id")
     private UserRole role;
@@ -21,41 +22,44 @@ public class User extends BaseEntity implements UserDetails {
     @JoinColumn(name = "person_data_id")
     private PersonData personData;
 
-//    @Column(name = "is_active")
-//    private Boolean isActive;
+    @Column(name = "isactive")
+    private Boolean isActive;
 
     private String password;
     private String login;
 
 
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(this.role);
+        return null;
     }
+//    @Override
+//    public String getPassword(){
+//        return password;
+//    }
 
     @Override
     public String getUsername() {
-        return this.login;
+        return null;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return false;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return false;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return false;
     }
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return false;
     }
 }

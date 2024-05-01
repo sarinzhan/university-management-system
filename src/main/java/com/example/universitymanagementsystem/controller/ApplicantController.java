@@ -2,12 +2,14 @@ package com.example.universitymanagementsystem.controller;
 
 import com.example.universitymanagementsystem.dto.request.RegisterApplicantApplicationDto;
 import com.example.universitymanagementsystem.dto.response.ResponseDto;
-import com.example.universitymanagementsystem.mapper.RegisterApplicantDtoMapper;
+import com.example.universitymanagementsystem.entity.applyment.ApplicantApplication;
+import com.example.universitymanagementsystem.mapper.RegisterApplicantApplicationMapper;
 import com.example.universitymanagementsystem.service.ApplicantApplicationService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+@Tag(name = "Applicant", description = "For applicants api")
 @RestController
 @RequestMapping("/api/applicant")
 public class ApplicantController {
@@ -18,14 +20,18 @@ public class ApplicantController {
     }
 
     @PostMapping("/register-applicant")
-    public Long registerApplicant(RegisterApplicantApplicationDto queryDto){
+    public ResponseDto registerApplicant(RegisterApplicantApplicationDto requestDto) {
         ResponseDto responseDto = new ResponseDto();
-        try{
-
-        }catch (Exception ex){
-
+        try {
+            responseDto.setData( applicantApplicationService
+                    .registerApplicantApplication(RegisterApplicantApplicationMapper.instance.dtoToEntity(requestDto)));
+            responseDto.setStatus("OK");
+        } catch (Exception ex) {
+            responseDto.setStatus("ERROR");
+            responseDto.setMessage(ex.getMessage());
+            return responseDto;
         }
-        return 1l;
+        return responseDto;
 
     }
 }
