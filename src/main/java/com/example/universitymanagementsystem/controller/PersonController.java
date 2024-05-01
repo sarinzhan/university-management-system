@@ -21,9 +21,11 @@ public class PersonController {
 
     @GetMapping(name = "/findByPN")
     public PersonFullNameDto findByPN(@RequestParam Long pn) throws PersonNotFoundException {
+        int a = 10;
         return PersonFullNameMapper.INSTANCE.entityToDto(
                 personService
                         .findByPN(pn)
+
         );
     }
 }

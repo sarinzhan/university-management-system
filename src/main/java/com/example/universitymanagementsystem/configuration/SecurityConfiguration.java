@@ -27,7 +27,6 @@ public class SecurityConfiguration {
                         .requestMatchers("/swagger-ui/**","/v3/**").permitAll()
                         .requestMatchers("api/person/findByPN").permitAll()
                         .anyRequest().authenticated());
-
         return httpSecurity.build();
     }
 }
