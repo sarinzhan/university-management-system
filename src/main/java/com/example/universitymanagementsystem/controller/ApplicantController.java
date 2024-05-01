@@ -32,6 +32,5 @@ public class ApplicantController {
             return responseDto;
         }
         return responseDto;
-
     }
 }
