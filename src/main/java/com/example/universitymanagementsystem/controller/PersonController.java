@@ -34,8 +34,5 @@ public class PersonController{
         }
     }
 
-    @GetMapping("/hello")
-    public String hello(@RequestParam String name){
-        return "Hello " + name;
-    }
+
 }
