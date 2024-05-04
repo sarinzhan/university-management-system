@@ -8,5 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class VerificationController {
     public static void main(String[] args) {
             int a = 1;
+            String url = "ddd";
+            String path = "aa";
     }
 }
