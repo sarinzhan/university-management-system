@@ -4,6 +4,7 @@ import com.example.universitymanagementsystem.repository.PersonRepository;
 import jakarta.servlet.FilterChain;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,11 +22,14 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth
+                .httpBasic(Customizer.withDefaults())
+                .cors(Customizer.withDefaults())
+                .csrf(AbstractHttpConfigurer::disable);
+        httpSecurity
+                .authorizeHttpRequests(request -> request
                         .requestMatchers("/login/**").permitAll()
-                        .requestMatchers("/swagger-ui/**","/v3/**").permitAll()
-                        .requestMatchers("api/person/findByPN").permitAll()
+                        .requestMatchers("/swagger-ui/**","/v3/api-docs").permitAll()
+                        .requestMatchers("/person/**").permitAll()
                         .anyRequest().authenticated());
         return httpSecurity.build();
     }

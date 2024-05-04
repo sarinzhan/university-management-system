@@ -6,12 +6,11 @@ import com.example.universitymanagementsystem.entity.applyment.ApplicantApplicat
 import com.example.universitymanagementsystem.mapper.RegisterApplicantApplicationMapper;
 import com.example.universitymanagementsystem.service.ApplicantApplicationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 @Tag(name = "Applicant", description = "For applicants api")
 @RestController
-@RequestMapping("/api/applicant")
+@RequestMapping("/applicant")
 public class ApplicantController {
     private final ApplicantApplicationService applicantApplicationService;
 
@@ -20,7 +19,7 @@ public class ApplicantController {
     }
 
     @PostMapping("/register-applicant")
-    public ResponseDto registerApplicant(RegisterApplicantApplicationDto requestDto) {
+    public ResponseDto registerApplicant(@RequestBody RegisterApplicantApplicationDto requestDto) {
         ResponseDto responseDto = new ResponseDto();
         try {
             responseDto.setData( applicantApplicationService

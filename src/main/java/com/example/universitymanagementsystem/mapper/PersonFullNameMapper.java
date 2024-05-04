@@ -5,8 +5,7 @@ import com.example.universitymanagementsystem.entity.PersonData;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface PersonFullNameMapper {
-    PersonFullNameMapper INSTANCE = Mappers.getMapper(PersonFullNameMapper.class);
     PersonFullNameDto entityToDto(PersonData entity);
 }
