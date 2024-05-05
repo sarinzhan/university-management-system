@@ -30,4 +30,7 @@ public class PersonController {
             return new PersonFullNameDto();
         }
     }
+
+    @GetMapping(name = "/activateAccount")
+    public
 }
