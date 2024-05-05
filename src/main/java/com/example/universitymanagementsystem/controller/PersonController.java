@@ -25,10 +25,11 @@ public class PersonController{
     }
 
     @GetMapping("/find-by-pn")
-    public PersonFullNameDto findByPN(@RequestParam Long pn) throws PersonNotFoundException {
+    public PersonFullNameDto findByPN(@RequestParam(value = "pn") Long pn) throws PersonNotFoundException {
         try {
             return personFullNameMapper.entityToDto(
                     personService.findByPN(pn));
+            //added in main and value = "pn"
         }catch (Exception ex){
             return new PersonFullNameDto();
         }
