@@ -33,4 +33,9 @@ public class SecurityConfiguration {
                         .anyRequest().authenticated());
         return httpSecurity.build();
     }
+
+    @Bean
+    public SmtpSettings smtpSettings() {
+        return new SmtpSettings();
+    }
 }

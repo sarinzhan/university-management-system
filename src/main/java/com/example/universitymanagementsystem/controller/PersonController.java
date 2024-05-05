@@ -31,6 +31,6 @@ public class PersonController {
         }
     }
 
-    @GetMapping(name = "/activateAccount")
-    public
+    //@GetMapping(name = "/activateAccount")
+    //public
 }
