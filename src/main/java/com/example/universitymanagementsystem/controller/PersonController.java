@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/person")
 @RestController
-public class PersonController{
+public class PersonController {
 
     private final PersonFullNameMapper personFullNameMapper;
     private final PersonService personService;
@@ -21,11 +21,13 @@ public class PersonController{
         this.personService = personService;
     }
 
-    @GetMapping("/find-by-pn/{pn}")
-    public PersonFullNameDto findByPN(@PathVariable Long pn) throws PersonNotFoundException {
+    @GetMapping("/find-by-pn")
+    public PersonFullNameDto findByPN(@RequestParam Long pn) throws PersonNotFoundException {
+        try {
+            return personFullNameMapper.entityToDto(
+                    personService.findByPN(pn));
+        } catch (Exception ex) {
             return new PersonFullNameDto();
-
+        }
     }
-
-
 }
