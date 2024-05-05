@@ -1,14 +1,29 @@
 package com.example.universitymanagementsystem.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.universitymanagementsystem.dto.request.ApplicantVerificationCodeDto;
+import com.example.universitymanagementsystem.mapper.ApplicantVerificationCodeMapper;
+import com.example.universitymanagementsystem.mapper.RegisterApplicantApplicationMapper;
+import com.example.universitymanagementsystem.service.VerificationCodeService;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/verification-token")
+@RequestMapping("/verification")
 public class VerificationController {
-    @GetMapping("/check")
-    public Boolean check(){
-        return true;
+    private final VerificationCodeService verificationCodeService;
+    private final ApplicantVerificationCodeMapper applicantApplicationMapper;
+
+    public VerificationController(VerificationCodeService verificationCodeService, ApplicantVerificationCodeMapper applicantApplicationMapper) {
+        this.verificationCodeService = verificationCodeService;
+        this.applicantApplicationMapper = applicantApplicationMapper;
+    }
+
+    @PostMapping("/activate-applicant")
+    public String activate(@RequestBody ApplicantVerificationCodeDto verificationCodeDto){
+        try{
+            verificationCodeService.verificateApplicantApplication(applicantApplicationMapper.dtoToEntity(verificationCodeDto));
+            return "Ok";
+        } catch (Exception ex){
+            return "Error";
+        }
     }
 }
