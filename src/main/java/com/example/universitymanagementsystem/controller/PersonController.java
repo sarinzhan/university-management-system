@@ -6,10 +6,7 @@ import com.example.universitymanagementsystem.mapper.PersonFullNameMapper;
 import com.example.universitymanagementsystem.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/person")
 @RestController
@@ -24,14 +21,10 @@ public class PersonController{
         this.personService = personService;
     }
 
-    @GetMapping("/find-by-pn")
-    public PersonFullNameDto findByPN(@RequestParam Long pn) throws PersonNotFoundException {
-        try {
-            return personFullNameMapper.entityToDto(
-                    personService.findByPN(pn));
-        }catch (Exception ex){
+    @GetMapping("/find-by-pn/{pn}")
+    public PersonFullNameDto findByPN(@PathVariable Long pn) throws PersonNotFoundException {
             return new PersonFullNameDto();
-        }
+
     }
 
 
