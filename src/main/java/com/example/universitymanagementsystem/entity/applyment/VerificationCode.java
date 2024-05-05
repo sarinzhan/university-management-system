@@ -13,14 +13,11 @@ public class VerificationCode extends BaseEntity {
     @Column(unique = true,nullable = false)
     private String code;
 
-    @Column(name = "created_date")
-    private LocalDateTime createdDate;
-
     @Column(name = "expire_date")
     private LocalDateTime expireDate;
 
-    @Column(name = "owner_personal_number",nullable = false)
-    private Long ownerPersonalNumber;
+    @Column(name = "applicant_application_id")
+    private Long applicantApplicationId;
 
     @Column(name = "is_applied")
     private Boolean isApplied;
