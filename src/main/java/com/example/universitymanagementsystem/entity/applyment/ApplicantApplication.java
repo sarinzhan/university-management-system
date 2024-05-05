@@ -20,7 +20,6 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 public class ApplicantApplication extends BaseEntity {
-    private ApplicantApplicationStatus status;
 
     @Column(name = "application_date")
     private LocalDateTime createdDate;
@@ -71,4 +70,10 @@ public class ApplicantApplication extends BaseEntity {
 
     @Column(name = "is_activated")
     private Boolean isActivated;
+
+    @Column(name = "is_accepted")
+    private Boolean isAccepted;
+
+    @Column(name = "is_declined")
+    private Boolean isDeclined;
 }

@@ -1,8 +1,6 @@
 package com.example.universitymanagementsystem.service.impl;
 
 import com.example.universitymanagementsystem.entity.applyment.ApplicantApplication;
-import com.example.universitymanagementsystem.entity.applyment.ApplicantApplicationStatus;
-import com.example.universitymanagementsystem.entity.applyment.SpecialtyAdmission;
 import com.example.universitymanagementsystem.entity.applyment.VerificationCode;
 import com.example.universitymanagementsystem.exception.*;
 import com.example.universitymanagementsystem.repository.ApplicantApplicationRepository;
@@ -36,21 +34,21 @@ public class ApplicantApplicationServiceImpl implements ApplicantApplicationServ
             ApplicantApplicationAlreadyAppliedException,
             SpecialtyAdmissionInvalidException
     {
-        VerificationCode verificationCode = verificationCodeRepository
-                .findByOwnerPersonalNumber(app.getPersonalNumber())
-                .orElseThrow(() -> new InvalidVerificationCodeExpcetion("Invalid verification code"));
-        if(verificationCode.getIsApplied()){
-            throw  new ApplicantApplicationAlreadyAppliedException("Applicant application already applied");
-        }
-        if(LocalDateTime.now().isBefore(verificationCode.getExpireDate())){
-            throw new VerificationCodeExpiredException("Verification code expired");
-        }
+//        VerificationCode verificationCode = verificationCodeRepository
+//                .findByOwnerPersonalNumber(app.getPersonalNumber())
+//                .orElseThrow(() -> new InvalidVerificationCodeExpcetion("Invalid verification code"));
+//        if(verificationCode.getIsApplied()){
+//            throw  new ApplicantApplicationAlreadyAppliedException("Applicant application already applied");
+//        }
+//        if(LocalDateTime.now().isBefore(verificationCode.getExpireDate())){
+//            throw new VerificationCodeExpiredException("Verification code expired");
+//        }
         specialtyAdmissionRepository
                 .getActiveBySpecialtyId(app.getSpecialty().getId())
                 .orElseThrow(() -> new SpecialtyAdmissionInvalidException("Specialty admission invalid"));
-        applicationRepository
-                .findByPersonalNumberAndStatus(app.getPersonalNumber(), ApplicantApplicationStatus.CREATED)
-                .orElseThrow(() -> new ApplicantApplicationAlreadyExistException("Applicant application already exist and waiting for verification"));
+//        applicationRepository
+//                .findByPersonalNumberAndStatus(app.getPersonalNumber(), "created")
+//                .orElseThrow(() -> new ApplicantApplicationAlreadyExistException("Applicant application already exist and waiting for verification"));
 
         return applicationRepository.save(app).getId();
 
