@@ -1,56 +1,44 @@
 package com.example.universitymanagementsystem.service.impl;
 
 import com.example.universitymanagementsystem.entity.applyment.ApplicantApplication;
-import com.example.universitymanagementsystem.entity.applyment.VerificationCode;
 import com.example.universitymanagementsystem.exception.*;
 import com.example.universitymanagementsystem.repository.ApplicantApplicationRepository;
+import com.example.universitymanagementsystem.repository.CandidateRepository;
 import com.example.universitymanagementsystem.repository.SpecialtyAdmissionRepository;
-import com.example.universitymanagementsystem.repository.VerificationCodeRepository;
 import com.example.universitymanagementsystem.service.ApplicantApplicationService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-
 @Service
 public class ApplicantApplicationServiceImpl implements ApplicantApplicationService {
-    private final VerificationCodeRepository verificationCodeRepository;
-    private final ApplicantApplicationRepository applicationRepository;
+    private final CandidateRepository candidateRepository;
+    private final ApplicantApplicationRepository applicantApplicationRepository;
     private final SpecialtyAdmissionRepository specialtyAdmissionRepository;
 
     public ApplicantApplicationServiceImpl(
-            VerificationCodeRepository verificationCodeRepository,
-            ApplicantApplicationRepository appRep,
+            CandidateRepository candidateRepository, ApplicantApplicationRepository appRep,
             SpecialtyAdmissionRepository specialtyAdmissionRepository) {
-        this.verificationCodeRepository = verificationCodeRepository;
-        this.applicationRepository = appRep;
+        this.candidateRepository = candidateRepository;
+        this.applicantApplicationRepository = appRep;
         this.specialtyAdmissionRepository = specialtyAdmissionRepository;
     }
 
     @Override
     public Long registerApplicantApplication(ApplicantApplication app) throws
-            ApplicantApplicationAlreadyExistException,
-            InvalidVerificationCodeExpcetion,
-            VerificationCodeExpiredException,
             ApplicantApplicationAlreadyAppliedException,
             SpecialtyAdmissionInvalidException
     {
-//        VerificationCode verificationCode = verificationCodeRepository
-//                .findByOwnerPersonalNumber(app.getPersonalNumber())
-//                .orElseThrow(() -> new InvalidVerificationCodeExpcetion("Invalid verification code"));
-//        if(verificationCode.getIsApplied()){
-//            throw  new ApplicantApplicationAlreadyAppliedException("Applicant application already applied");
-//        }
-//        if(LocalDateTime.now().isBefore(verificationCode.getExpireDate())){
-//            throw new VerificationCodeExpiredException("Verification code expired");
-//        }
         specialtyAdmissionRepository
-                .getActiveBySpecialtyId(app.getSpecialty().getId())
-                .orElseThrow(() -> new SpecialtyAdmissionInvalidException("Specialty admission invalid"));
-//        applicationRepository
-//                .findByPersonalNumberAndStatus(app.getPersonalNumber(), "created")
-//                .orElseThrow(() -> new ApplicantApplicationAlreadyExistException("Applicant application already exist and waiting for verification"));
+                .getActiveBySpecId(app.getSpecialty().getId())
+                .orElseThrow(() -> new SpecialtyAdmissionInvalidException("Набор по выбранному направлению не активен"));
+        if(applicantApplicationRepository.findByPnWhichIsNonChecked(app.getPersonalNumber())
+                .isPresent()){
+            throw new ApplicantApplicationAlreadyAppliedException("Абитуриент уже ожидает проверки данных");
+        }
 
-        return applicationRepository.save(app).getId();
+        candidateRepository.findActiveByPn(app.getPersonalNumber())
+                .orElseThrow(() -> new ApplicantApplicationAlreadyAppliedException("Абитуриент уже числится кандидатом"));
+
+        return applicantApplicationRepository.save(app).getId();
 
     }
 }

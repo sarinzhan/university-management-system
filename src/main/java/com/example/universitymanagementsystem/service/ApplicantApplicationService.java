@@ -4,5 +4,5 @@ import com.example.universitymanagementsystem.entity.applyment.ApplicantApplicat
 import com.example.universitymanagementsystem.exception.*;
 
 public interface ApplicantApplicationService {
-    Long registerApplicantApplication(ApplicantApplication app) throws ApplicantApplicationAlreadyExistException, InvalidVerificationCodeExpcetion, VerificationCodeExpiredException, ApplicantApplicationAlreadyAppliedException, SpecialtyAdmissionInvalidException;
+    Long registerApplicantApplication(ApplicantApplication app) throws ApplicantApplicationAlreadyAppliedException, SpecialtyAdmissionInvalidException;
 }

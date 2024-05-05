@@ -76,4 +76,7 @@ public class ApplicantApplication extends BaseEntity {
 
     @Column(name = "is_declined")
     private Boolean isDeclined;
+
+    @Column(name = "is_checked")
+    private Boolean isChecked;
 }
