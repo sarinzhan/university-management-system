@@ -1,14 +1,15 @@
 package com.example.universitymanagementsystem.service.impl;
 
+import com.example.universitymanagementsystem.configuration.SmtpSettings;
 import com.example.universitymanagementsystem.service.EmailService;
+import org.springframework.stereotype.Service;
 
 import javax.mail.*;
 import javax.mail.internet.*;
 import java.util.Properties;
 
+@Service
 public class EmailServiceImpl implements EmailService {
-
-    //как подтянуть smtp настройки
     private final SmtpSettings smtpSettings;
 
     public EmailServiceImpl(SmtpSettings smtpSettings) {
@@ -37,34 +38,5 @@ public class EmailServiceImpl implements EmailService {
             message.setText(messageText);
 
             Transport.send(message);
-    }
-
-    public class SmtpSettings{
-        private String host;
-        private int port;
-        private String login;
-        private String password;
-        private String senderName;
-
-
-        public String getHost(){
-            return host;
-        }
-
-        public int getPort(){
-            return port;
-        }
-
-        public String getLogin(){
-            return login;
-        }
-
-        public String getPassword(){
-            return password;
-        }
-
-        public  String getSenderName(){
-            return senderName;
-        }
     }
 }

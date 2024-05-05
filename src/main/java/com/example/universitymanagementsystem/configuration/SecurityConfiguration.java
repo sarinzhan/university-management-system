@@ -30,4 +30,9 @@ public class SecurityConfiguration {
 
         return httpSecurity.build();
     }
+
+    @Bean
+    public SmtpSettings smtpSettings() {
+        return new SmtpSettings();
+    }
 }
