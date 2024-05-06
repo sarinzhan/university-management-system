@@ -2,10 +2,13 @@ package com.example.universitymanagementsystem.service.impl;
 
 import com.example.universitymanagementsystem.entity.applyment.ApplicantApplication;
 import com.example.universitymanagementsystem.entity.applyment.VerificationCode;
+import com.example.universitymanagementsystem.exception.ApplicantApplicationNotFoundException;
+import com.example.universitymanagementsystem.exception.VerificationCodeException;
 import com.example.universitymanagementsystem.repository.ApplicantApplicationRepository;
 import com.example.universitymanagementsystem.repository.VerificationCodeRepository;
 import com.example.universitymanagementsystem.service.VerificationCodeService;
 import jakarta.transaction.Transactional;
+import org.springframework.context.ApplicationContextException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -27,19 +30,19 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
     public Boolean verificateApplicantApplication(VerificationCode verificationCode) throws Exception {
          VerificationCode currentVerificationCode = verificationCodeRepository
                  .getByApplicantApplicationId(verificationCode.getApplicantApplicationId())
-                 .orElseThrow(() -> new Exception("sdadas"));
+                 .orElseThrow(() -> new ApplicantApplicationNotFoundException("There is no user with this number"));
 
          if (!currentVerificationCode.getCode().equals(verificationCode.getCode())) {
-             new Exception("dasdasd");
+             throw new VerificationCodeException("Incorrect verification code has been entered");
          }
 
          if (LocalDateTime.now().isAfter(currentVerificationCode.getExpireDate())){
-             new Exception("asdasdas");
+             throw new VerificationCodeException("The verification code has expired");
          }
 
-        applicationRepository.findById(verificationCode
-                .getApplicantApplicationId())
-                .orElseThrow(() -> new Exception("asdasd"))
+        applicationRepository
+                .findById(verificationCode.getApplicantApplicationId())
+                .orElseThrow(() -> new ApplicantApplicationNotFoundException("There is no user with this number"))
                 .setIsActivated(true);
 
          currentVerificationCode.setIsApplied(true);
