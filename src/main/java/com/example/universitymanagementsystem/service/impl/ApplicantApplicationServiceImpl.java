@@ -6,30 +6,27 @@ import com.example.universitymanagementsystem.repository.ApplicantApplicationRep
 import com.example.universitymanagementsystem.repository.CandidateRepository;
 import com.example.universitymanagementsystem.repository.SpecialtyAdmissionRepository;
 import com.example.universitymanagementsystem.service.ApplicantApplicationService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.spi.LoggingEventBuilder;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class ApplicantApplicationServiceImpl implements ApplicantApplicationService {
     private final CandidateRepository candidateRepository;
     private final ApplicantApplicationRepository applicantApplicationRepository;
     private final SpecialtyAdmissionRepository specialtyAdmissionRepository;
-
-    public ApplicantApplicationServiceImpl(
-            CandidateRepository candidateRepository, ApplicantApplicationRepository appRep,
-            SpecialtyAdmissionRepository specialtyAdmissionRepository) {
-        this.candidateRepository = candidateRepository;
-        this.applicantApplicationRepository = appRep;
-        this.specialtyAdmissionRepository = specialtyAdmissionRepository;
-    }
 
     @Override
     public Long registerApplicantApplication(ApplicantApplication app) throws
             ApplicantApplicationAlreadyAppliedException,
             SpecialtyAdmissionInvalidException
     {
-        specialtyAdmissionRepository
-                .getActiveBySpecId(app.getSpecialty().getId())
-                .orElseThrow(() -> new SpecialtyAdmissionInvalidException("Набор по выбранному направлению не активен"));
         if(applicantApplicationRepository.findByPnWhichIsNonChecked(app.getPersonalNumber())
                 .isPresent()){
             throw new ApplicantApplicationAlreadyAppliedException("Абитуриент уже ожидает проверки данных");
@@ -37,6 +34,12 @@ public class ApplicantApplicationServiceImpl implements ApplicantApplicationServ
 
         candidateRepository.findActiveByPn(app.getPersonalNumber())
                 .orElseThrow(() -> new ApplicantApplicationAlreadyAppliedException("Абитуриент уже числится кандидатом"));
+
+                specialtyAdmissionRepository
+                .getActiveBySpecId(app.getSpecialty().getId())
+                .orElseThrow(() -> new SpecialtyAdmissionInvalidException("Набор по выбранному направлению не активен"));
+
+//        LoggingEventBuilder loggingEventBuilder = this.log.atError();
 
         return applicantApplicationRepository.save(app).getId();
 

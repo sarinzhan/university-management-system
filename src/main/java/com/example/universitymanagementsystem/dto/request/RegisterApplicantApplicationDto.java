@@ -14,7 +14,7 @@ public class RegisterApplicantApplicationDto {
     private Long facultyId;
     private Long departmentId;
     private Long personalNumber;
-    private Integer email;
+    private String email;
     private Long passportId;
     private String country;
     private LocalDate dateOfBirth;

@@ -17,31 +17,31 @@ import java.time.LocalDateTime;
 @Entity(name = "specialty_admission")
 @Data
 public class SpecialtyAdmission extends BaseEntity {
-    @Column(name = "start_date")
+    @Column(name = "start_date",nullable = false)
     private LocalDateTime startDate;
 
-    @Column(name ="end_date")
+    @Column(name ="end_date",nullable = false)
     private LocalDateTime endDate;
 
-    @Column(name = "group_capacity")
+    @Column(name = "group_capacity",nullable = false)
     private Integer groupCapacity;
 
-    @Column(name = "group_amount")
+    @Column(name = "group_amount",nullable = false)
     private Integer groupAmount;
 
     @Column(name = "min_score")
     private Integer minScore;
 
     @ManyToOne
-    @JoinColumn(name = "specialty_id")
+    @JoinColumn(name = "specialty_id",nullable = false)
     private Specialty specialty;
 
     @ManyToOne
-    @JoinColumn(name = "faculty_id")
+    @JoinColumn(name = "faculty_id",nullable = false)
     private Faculty faculty;
 
     @ManyToOne
-    @JoinColumn(name = "department_id")
+    @JoinColumn(name = "department_id",nullable = false)
     private Department department;
 
 }

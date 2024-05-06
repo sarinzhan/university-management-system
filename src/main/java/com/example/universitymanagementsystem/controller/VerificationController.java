@@ -4,8 +4,10 @@ import com.example.universitymanagementsystem.dto.request.ApplicantVerificationC
 import com.example.universitymanagementsystem.mapper.ApplicantVerificationCodeMapper;
 import com.example.universitymanagementsystem.mapper.RegisterApplicantApplicationMapper;
 import com.example.universitymanagementsystem.service.VerificationCodeService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "Verification API")
 @RestController
 @RequestMapping("/verification")
 public class VerificationController {
