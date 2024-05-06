@@ -23,6 +23,7 @@ public class ApplicantController {
     public ResponseDto registerApplicant(@RequestBody RegisterApplicantApplicationDto requestDto) {
         ResponseDto responseDto = new ResponseDto();
         try {
+            registerApplicantApplicationMapper.dtoToEntity(requestDto);
             responseDto.setData( applicantApplicationService
                     .registerApplicantApplication(registerApplicantApplicationMapper.dtoToEntity(requestDto)));
             responseDto.setStatus("OK");
