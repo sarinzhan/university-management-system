@@ -4,6 +4,7 @@ import com.example.universitymanagementsystem.entity.applyment.Candidate;
 import com.example.universitymanagementsystem.exception.CandidateNotFoundException;
 import com.example.universitymanagementsystem.repository.CandidateRepository;
 import com.example.universitymanagementsystem.service.CandidateService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -11,12 +12,9 @@ import java.util.List;
 import java.util.stream.Stream;
 
 @Service
+@RequiredArgsConstructor
 public class CandidateServiceImpl implements CandidateService {
     private final CandidateRepository candidateRepository;
-
-    public CandidateServiceImpl(CandidateRepository candidateRepository) {
-        this.candidateRepository = candidateRepository;
-    }
 
     @Override
     public List<Candidate> getAllActiveBySpecId(Long specialtyId) throws CandidateNotFoundException {

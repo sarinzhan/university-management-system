@@ -8,11 +8,7 @@ import com.example.universitymanagementsystem.repository.SpecialtyAdmissionRepos
 import com.example.universitymanagementsystem.service.ApplicantApplicationService;
 import com.example.universitymanagementsystem.service.EmailService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.spi.LoggingEventBuilder;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;

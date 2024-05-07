@@ -4,17 +4,16 @@ import com.example.universitymanagementsystem.entity.applyment.SpecialtyAdmissio
 import com.example.universitymanagementsystem.exception.SpecialtyAdmissionNotFoundException;
 import com.example.universitymanagementsystem.repository.SpecialtyAdmissionRepository;
 import com.example.universitymanagementsystem.service.SpecialtyAdmissionService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class SpecialtyAdmissionServiceImpl implements SpecialtyAdmissionService {
     private final SpecialtyAdmissionRepository specialtyAdmissionRepository;
 
-    public SpecialtyAdmissionServiceImpl(SpecialtyAdmissionRepository specialtyAdmissionRepository) {
-        this.specialtyAdmissionRepository = specialtyAdmissionRepository;
-    }
 
     @Override
     public List<SpecialtyAdmission> getActiveAdmissions() throws SpecialtyAdmissionNotFoundException {
