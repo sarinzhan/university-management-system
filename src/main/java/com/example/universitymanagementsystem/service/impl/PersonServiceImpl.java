@@ -5,18 +5,15 @@ import com.example.universitymanagementsystem.exception.PersonNotFoundException;
 import com.example.universitymanagementsystem.exception.PersonalNumberAlreadyExistException;
 import com.example.universitymanagementsystem.repository.PersonRepository;
 import com.example.universitymanagementsystem.service.PersonService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class PersonServiceImpl implements PersonService {
     private final PersonRepository personRepository;
-
-    @Autowired
-    public PersonServiceImpl(PersonRepository personRepository) {
-        this.personRepository = personRepository;
-    }
 
     @Override
     public PersonData findByPN(Long pn) throws PersonNotFoundException {

@@ -8,22 +8,18 @@ import com.example.universitymanagementsystem.repository.ApplicantApplicationRep
 import com.example.universitymanagementsystem.repository.VerificationCodeRepository;
 import com.example.universitymanagementsystem.service.VerificationCodeService;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationContextException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
 @Service
+@RequiredArgsConstructor
 public class VerificationCodeServiceImpl implements VerificationCodeService {
 
     private final VerificationCodeRepository verificationCodeRepository;
     private final ApplicantApplicationRepository applicationRepository;
-
-    public VerificationCodeServiceImpl(VerificationCodeRepository verificationCodeRepository, ApplicantApplicationRepository applicationRepository) {
-        this.verificationCodeRepository = verificationCodeRepository;
-        this.applicationRepository = applicationRepository;
-    }
-
 
     @Override
     @Transactional

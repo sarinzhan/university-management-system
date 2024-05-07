@@ -5,19 +5,16 @@ import com.example.universitymanagementsystem.mapper.ApplicantVerificationCodeMa
 import com.example.universitymanagementsystem.mapper.RegisterApplicantApplicationMapper;
 import com.example.universitymanagementsystem.service.VerificationCodeService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Verification API")
 @RestController
 @RequestMapping("/verification")
+@RequiredArgsConstructor
 public class VerificationController {
     private final VerificationCodeService verificationCodeService;
     private final ApplicantVerificationCodeMapper applicantApplicationMapper;
-
-    public VerificationController(VerificationCodeService verificationCodeService, ApplicantVerificationCodeMapper applicantApplicationMapper) {
-        this.verificationCodeService = verificationCodeService;
-        this.applicantApplicationMapper = applicantApplicationMapper;
-    }
 
     @PostMapping("/activate-applicant")
     public String activate(@RequestBody ApplicantVerificationCodeDto verificationCodeDto){
