@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
-public class ResponseDto {
-    private Object data;
+public class CommonResponseDto<T> {
+    private T data;
     private Object message;
-    private Object status;
+    private Integer status;
 }

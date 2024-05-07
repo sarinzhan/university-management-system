@@ -4,16 +4,19 @@ import com.example.universitymanagementsystem.dto.request.RegisterApplicantAppli
 import com.example.universitymanagementsystem.entity.applyment.ApplicantApplication;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 
 import java.time.LocalDateTime;
 
 @Mapper(imports = {LocalDateTime.class},componentModel = "spring")
 public interface RegisterApplicantApplicationMapper {
-    @Mapping(target = "createdDate", expression = "java(LocalDateTime.now())")
-    @Mapping(target = "specialty.id", source = "specialtyId")
-    @Mapping(target = "faculty.id", source = "facultyId")
-    @Mapping(target = "department.id",source = "departmentId")
-    @Mapping(target = "specialtyAdmission.id", source = "specialtyAdmissionId")
+    @Mappings({
+            @Mapping(target = "createdDate", expression = "java(LocalDateTime.now())"),
+            @Mapping(target = "specialty.id", source = "specialtyId"),
+            @Mapping(target = "faculty.id", source = "facultyId"),
+            @Mapping(target = "department.id", source = "departmentId"),
+            @Mapping(target = "specialtyAdmission.id", source = "specialtyAdmissionId")
+    })
     ApplicantApplication dtoToEntity(RegisterApplicantApplicationDto dto);
 }
 

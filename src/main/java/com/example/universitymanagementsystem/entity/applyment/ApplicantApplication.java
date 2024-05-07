@@ -30,6 +30,7 @@ public class ApplicantApplication extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "specialty_admission_id",nullable = false)
     private SpecialtyAdmission specialtyAdmission;
+
     @ManyToOne
     @JoinColumn(name = "specialty_id",nullable = false)
     private Specialty specialty;
@@ -44,10 +45,11 @@ public class ApplicantApplication extends BaseEntity {
 
     @Column(name = "personal_number",nullable = false)
     private Long personalNumber;
+
     @Column(nullable = false)
     private String email;
-    private String nationality;
 
+    private String nationality;
 
     @Column(name = "passport_id")
     private Long passportId;
@@ -76,4 +78,7 @@ public class ApplicantApplication extends BaseEntity {
 
     @Column(name = "is_declined")
     private Boolean isDeclined;
+
+    @Column(name = "is_checked")
+    private Boolean isChecked;
 }

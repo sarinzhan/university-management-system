@@ -11,7 +11,7 @@ import lombok.Data;
 public class Candidate extends BaseEntity {
     @OneToOne
     @JoinColumn(name = "applicant_application_id")
-    private ApplicantApplication application;
+    private ApplicantApplication applicantApplication;
 
     @Column(name = "test_score")
     private Integer testScore;

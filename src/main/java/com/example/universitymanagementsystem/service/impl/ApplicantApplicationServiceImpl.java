@@ -1,63 +1,51 @@
 package com.example.universitymanagementsystem.service.impl;
 
 import com.example.universitymanagementsystem.entity.applyment.ApplicantApplication;
-import com.example.universitymanagementsystem.entity.applyment.VerificationCode;
 import com.example.universitymanagementsystem.exception.*;
 import com.example.universitymanagementsystem.repository.ApplicantApplicationRepository;
+import com.example.universitymanagementsystem.repository.CandidateRepository;
 import com.example.universitymanagementsystem.repository.SpecialtyAdmissionRepository;
-import com.example.universitymanagementsystem.repository.VerificationCodeRepository;
 import com.example.universitymanagementsystem.service.ApplicantApplicationService;
 import com.example.universitymanagementsystem.service.EmailService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.spi.LoggingEventBuilder;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
-import java.time.LocalDateTime;
 import java.util.Random;
 
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class ApplicantApplicationServiceImpl implements ApplicantApplicationService {
-    private final VerificationCodeRepository verificationCodeRepository;
-    private final ApplicantApplicationRepository applicationRepository;
+    private final CandidateRepository candidateRepository;
+    private final ApplicantApplicationRepository applicantApplicationRepository;
     private final SpecialtyAdmissionRepository specialtyAdmissionRepository;
     private final EmailService emailService;
 
-    public ApplicantApplicationServiceImpl(
-            VerificationCodeRepository verificationCodeRepository,
-            ApplicantApplicationRepository appRep,
-            SpecialtyAdmissionRepository specialtyAdmissionRepository, EmailService emailService) {
-        this.verificationCodeRepository = verificationCodeRepository;
-        this.applicationRepository = appRep;
-        this.specialtyAdmissionRepository = specialtyAdmissionRepository;
-        this.emailService = emailService;
-    }
-
     @Override
     public Long registerApplicantApplication(ApplicantApplication app) throws
-            ApplicantApplicationAlreadyExistException,
-            InvalidVerificationCodeExpcetion,
-            VerificationCodeExpiredException,
             ApplicantApplicationAlreadyAppliedException,
-            SpecialtyAdmissionInvalidException, MessagingException {
-//        VerificationCode verificationCode = verificationCodeRepository
-//                .findByOwnerPersonalNumber(app.getPersonalNumber())
-//                .orElseThrow(() -> new InvalidVerificationCodeExpcetion("Invalid verification code"));
-//        if(verificationCode.getIsApplied()){
-//            throw  new ApplicantApplicationAlreadyAppliedException("Applicant application already applied");
-//        }
-//        if(LocalDateTime.now().isBefore(verificationCode.getExpireDate())){
-//            throw new VerificationCodeExpiredException("Verification code expired");
-//        }
-//       specialtyAdmissionRepository
-//                .getActiveBySpecialtyId(app.getSpecialty().getId())
-//                .orElseThrow(() -> new SpecialtyAdmissionInvalidException("Specialty admission invalid"));
-//        applicationRepository
-//                .findByPersonalNumberAndStatus(app.getPersonalNumber(), "created")
-//                .orElseThrow(() -> new ApplicantApplicationAlreadyExistException("Applicant application already exist and waiting for verification"));
+            SpecialtyAdmissionInvalidException,
+            MessagingException {
+        if(applicantApplicationRepository.findByPnWhichIsNonChecked(app.getPersonalNumber())
+                .isPresent()){
+            throw new ApplicantApplicationAlreadyAppliedException("Абитуриент уже ожидает проверки данных");
+        }
+
+        candidateRepository.findActiveByPn(app.getPersonalNumber())
+                .orElseThrow(() -> new ApplicantApplicationAlreadyAppliedException("Абитуриент уже числится кандидатом"));
+
+                specialtyAdmissionRepository
+                .getActiveBySpecId(app.getSpecialty().getId())
+                .orElseThrow(() -> new SpecialtyAdmissionInvalidException("Набор по выбранному направлению не активен"));
 
         emailService.sendMessage(app.getEmail(), "Verification", generateCode());
-
-        return applicationRepository.save(app).getId();
-
+        return applicantApplicationRepository.save(app).getId();
     }
 
     private String generateCode(){
