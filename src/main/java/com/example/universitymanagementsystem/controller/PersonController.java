@@ -25,6 +25,7 @@ public class PersonController {
     @GetMapping("/find-by-pn")
     public CommonResponseDto<PersonFullNameDto> findByPN(@RequestParam Long pn){
         CommonResponseDto<PersonFullNameDto> response = new CommonResponseDto<>();
+        //TEST
         try {
             response.setData(personFullNameMapper
                     .entityToDto(personService.findByPN(pn)));
