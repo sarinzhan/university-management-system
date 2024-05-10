@@ -1,16 +1,12 @@
 package com.example.universitymanagementsystem.controller;
 
 import com.example.universitymanagementsystem.dto.response.CommonResponseDto;
-import com.example.universitymanagementsystem.dto.response.PersonFullNameDto;
-import com.example.universitymanagementsystem.entity.PersonData;
+import com.example.universitymanagementsystem.dto.response.PersonDataResponseDto;
 import com.example.universitymanagementsystem.exception.PersonNotFoundException;
-import com.example.universitymanagementsystem.mapper.PersonFullNameMapper;
+import com.example.universitymanagementsystem.mapper.PersonDataMapper;
 import com.example.universitymanagementsystem.service.PersonService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Person", description = "APIs for person")
@@ -19,12 +15,12 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class PersonController {
 
-    private final PersonFullNameMapper personFullNameMapper;
+    private final PersonDataMapper personFullNameMapper;
     private final PersonService personService;
 
     @GetMapping("/find-by-pn")
-    public CommonResponseDto<PersonFullNameDto> findByPN(@RequestParam Long pn){
-        CommonResponseDto<PersonFullNameDto> response = new CommonResponseDto<>();
+    public CommonResponseDto<PersonDataResponseDto> findByPN(@RequestParam Long pn){
+        CommonResponseDto<PersonDataResponseDto> response = new CommonResponseDto<>();
         //TEST
         try {
             response.setData(personFullNameMapper
