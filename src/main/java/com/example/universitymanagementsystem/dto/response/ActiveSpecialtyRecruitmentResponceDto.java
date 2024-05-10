@@ -7,10 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CandidatesInfoResponseDto {
-    private String firstName;
-    private String middleName;
-    private String lastName;
-    private Integer testScore;
-    private Boolean isAdmitted;
+public class ActiveSpecialtyRecruitmentResponceDto {
+    private Long specialtyId;
+    private String specialtyName;
+    private Integer seatsNumber;
 }

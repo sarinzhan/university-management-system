@@ -1,9 +1,11 @@
 package com.example.universitymanagementsystem.controller;
 
 import com.example.universitymanagementsystem.dto.request.RegisterApplicantApplicationDto;
+import com.example.universitymanagementsystem.dto.response.ActiveSpecialtyRecruitmentResponceDto;
 import com.example.universitymanagementsystem.dto.response.CandidatesInfoResponseDto;
 import com.example.universitymanagementsystem.dto.response.CommonResponseDto;
 import com.example.universitymanagementsystem.entity.applyment.Candidate;
+import com.example.universitymanagementsystem.entity.applyment.SpecialtyAdmission;
 import com.example.universitymanagementsystem.entity.uni_struct.Faculty;
 import com.example.universitymanagementsystem.entity.uni_struct.Specialty;
 import com.example.universitymanagementsystem.exception.ApplicantApplicationAlreadyAppliedException;
@@ -19,6 +21,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -56,16 +60,24 @@ public class ApplicantController {
 
     @Operation(description = "Get faculties where specialty admission is available")
     @GetMapping("/get-specialty-admission")
-    public CommonResponseDto<Set<Faculty>> getSpecialtyAdmissions(){
-        CommonResponseDto<Set<Faculty>> responseDto = new CommonResponseDto<>();
+    public CommonResponseDto<Set<ActiveSpecialtyRecruitmentResponceDto>> getSpecialtyAdmissions(){
+        CommonResponseDto<Set<ActiveSpecialtyRecruitmentResponceDto>> responseDto = new CommonResponseDto<>();
+
+        LocalDateTime localDateTime = LocalDateTime.now();
         try{
-            Set<Faculty> faculties = specialtyAdmissionService.getActiveAdmissions()
+            Set<ActiveSpecialtyRecruitmentResponceDto> activeSpecialtyRecruitment = specialtyAdmissionService.getActiveAdmissions()
                     .stream()
-                    .map(x -> new Faculty(x.getFaculty().getId(), x.getFaculty().getName()))
+                    .filter(x -> x.getStartDate().isAfter(localDateTime)
+                            && x.getEndDate().isBefore(localDateTime))
+                    .map(x -> {
+                        Specialty specialty = x.getSpecialty();
+                        return new ActiveSpecialtyRecruitmentResponceDto(specialty.getId(), specialty.getName(), x.getGroupCapacity());
+                    })
                     .collect(Collectors.toSet());
+
             responseDto.setStatus(200);
             responseDto.setMessage("OK");
-            responseDto.setData(faculties);
+            responseDto.setData(activeSpecialtyRecruitment);
             return responseDto;
         } catch (SpecialtyAdmissionNotFoundException ex) {
             responseDto.setStatus(204);
@@ -76,15 +88,23 @@ public class ApplicantController {
 
     @Operation(description = "Get specialties by faculty id where admission is available")
     @GetMapping("/get-specialty-admission/{facultyId}")
-    public CommonResponseDto<Set<Specialty>> getSpecialtyAdmission(@PathVariable Long facultyId){
-        CommonResponseDto<Set<Specialty>> responseDto = new CommonResponseDto<>();
+    public CommonResponseDto<Set<ActiveSpecialtyRecruitmentResponceDto>> getSpecialtyAdmission(@PathVariable Long facultyId){
+        CommonResponseDto<Set<ActiveSpecialtyRecruitmentResponceDto>> responseDto = new CommonResponseDto<>();
+
+        LocalDateTime localDateTime = LocalDateTime.now();
         try{
-            Set<Specialty> specialties = specialtyAdmissionService.getActiveAdmissions()
+            Set<ActiveSpecialtyRecruitmentResponceDto> activeSpecialtyRecruitment = specialtyAdmissionService.getActiveAdmissions()
                     .stream()
-                    .filter(x -> x.getFaculty().getId().equals(facultyId))
-                    .map(x -> new Specialty(x.getSpecialty().getId(), x.getSpecialty().getName()))
+                    .filter(x -> x.getStartDate().isAfter(localDateTime)
+                            && x.getEndDate().isBefore(localDateTime)
+                            && x.getFaculty().getId().equals(facultyId))
+                    .map(x -> {
+                        Specialty specialty = x.getSpecialty();
+                        return new ActiveSpecialtyRecruitmentResponceDto(specialty.getId(), specialty.getName(), x.getGroupCapacity());
+                    })
                     .collect(Collectors.toSet());
-            responseDto.setData(specialties);
+
+            responseDto.setData(activeSpecialtyRecruitment);
             responseDto.setStatus(200);
             responseDto.setMessage("OK");
             return responseDto;
@@ -99,17 +119,39 @@ public class ApplicantController {
     @GetMapping("/get-candidates/{specialtyId}")
     public CommonResponseDto<List<CandidatesInfoResponseDto>> getCandidates(@PathVariable Long specialtyId){
         CommonResponseDto<List<CandidatesInfoResponseDto>> responseDto = new CommonResponseDto<>();
+
         try {
             List<CandidatesInfoResponseDto> activeCandidateList = candidateService.getAllActiveBySpecId(specialtyId)
-                    .stream().map(Candidate::getApplicantApplication).map(x -> new CandidatesInfoResponseDto(
+                    .stream()
+                    .map(Candidate::getApplicantApplication)
+                    .map(x -> new CandidatesInfoResponseDto(
+                            x.getFirstName(),
+                            x.getMiddleName(),
+                            x.getLastName(),
                             x.getTestScore(),
-                            x.getMiddleName().charAt(0) + x.getFirstName().charAt(0) + x.getLastName()))
-                    .toList();
+                            false))
+                    .sorted(Comparator.comparingDouble(CandidatesInfoResponseDto::getTestScore))
+                    .toList()
+                    .reversed();
+
+            SpecialtyAdmission specialtyAdmission = specialtyAdmissionService.getActiveAdmissions()
+                    .stream()
+                    .filter(x -> x.getSpecialty().getId().equals(specialtyId))
+                    .findFirst()
+                    .orElse(null);
+
+            int seatsNumber = specialtyAdmission.getGroupCapacity() * specialtyAdmission.getGroupAmount();
+
+            activeCandidateList
+                    .stream()
+                    .limit(seatsNumber)
+                    .forEach(x -> x.setIsAdmitted(true));
+
             responseDto.setData(activeCandidateList);
             responseDto.setStatus(200);
             responseDto.setMessage("OK");
             return responseDto;
-        }catch (CandidateNotFoundException ex){
+        }catch (Exception ex){
             responseDto.setStatus(204);
             responseDto.setMessage(ex.getMessage());
             return responseDto;
