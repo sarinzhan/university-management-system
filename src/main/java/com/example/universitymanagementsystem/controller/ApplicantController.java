@@ -32,83 +32,51 @@ public class ApplicantController {
     @Operation(summary = "Register applicant",description = "Register applicant application without activating.The response is applicant id.")
     @PostMapping("/register-applicant")
     public CommonResponseDto<Long> registerApplicant(@RequestBody(required = false) RegisterApplicantApplicationDto requestDto) {
-        CommonResponseDto<Long> responseDto = new CommonResponseDto<>();
-        try {
-            Long id = applicantApplicationService.registerApplicantApplication(
-                    registerApplicantApplicationMapper.dtoToEntity(requestDto));
-            responseDto.setData(id);
-            responseDto.setStatus(201);
-            responseDto.setMessage("Created");
+        Long id = applicantApplicationService.registerApplicantApplication(
+                registerApplicantApplicationMapper.dtoToEntity(requestDto));
 
-        } catch (BaseBusinessLogicException ex) {
-            responseDto.setStatus(400);
-            responseDto.setMessage(ex.getMessage());
-            return responseDto;
-        }catch (Exception ex){
-            responseDto.setStatus(500);
-            responseDto.setMessage("Internal server error");
-        }
-        return responseDto;
+        return new CommonResponseDto<Long>().setData(id).setOk();
     }
 
     @Operation(description = "Get faculties where specialty admission is available")
     @GetMapping("/get-specialty-admission")
     public CommonResponseDto<Set<Faculty>> getSpecialtyAdmissions(){
         CommonResponseDto<Set<Faculty>> responseDto = new CommonResponseDto<>();
-        try{
-            Set<Faculty> faculties = specialtyAdmissionService.getActiveAdmissions()
-                    .stream()
-                    .map(x -> new Faculty(x.getFaculty().getId(), x.getFaculty().getName()))
-                    .collect(Collectors.toSet());
-            responseDto.setOk().setData(faculties);
-            return responseDto;
-        } catch (BaseBusinessLogicException ex) {
-            responseDto.setStatus(204);
-            responseDto.setMessage(ex.getMessage());
-            return responseDto;
-        }
+        Set<Faculty> faculties = specialtyAdmissionService.getActiveAdmissions()
+                .stream()
+                .map(x -> new Faculty(x.getFaculty().getId(), x.getFaculty().getName()))
+                .collect(Collectors.toSet());
+        responseDto.setOk().setData(faculties);
+
+        return responseDto;
     }
 
     @Operation(description = "Get specialties by faculty id where admission is available")
     @GetMapping("/get-specialty-admission/{facultyId}")
-    public CommonResponseDto<Set<Specialty>> getSpecialtyAdmission(@PathVariable Long facultyId){
-        CommonResponseDto<Set<Specialty>> responseDto = new CommonResponseDto<>();
-        try{
-            Set<Specialty> specialties = specialtyAdmissionService.getActiveAdmissions()
-                    .stream()
-                    .filter(x -> x.getFaculty().getId().equals(facultyId))
-                    .map(x -> new Specialty(x.getSpecialty().getId(), x.getSpecialty().getName()))
-                    .collect(Collectors.toSet());
-            responseDto.setData(specialties);
-            responseDto.setStatus(200);
-            responseDto.setMessage("OK");
-            return responseDto;
-        }catch (BaseBusinessLogicException ex){
-            responseDto.setStatus(204);
-            responseDto.setMessage(ex.getMessage());
-            return responseDto;
-        }
+    public CommonResponseDto<Set<Specialty>> getSpecialtyAdmission(
+            @PathVariable Long facultyId
+    ){
+        Set<Specialty> specialties = specialtyAdmissionService.getActiveAdmissions()
+                .stream()
+                .filter(x -> x.getFaculty().getId().equals(facultyId))
+                .map(x -> new Specialty(x.getSpecialty().getId(), x.getSpecialty().getName()))
+                .collect(Collectors.toSet());
+
+        return new CommonResponseDto<Set<Specialty>>().setOk().setData(specialties);
     }
 
     @Operation(description = "Get candidates to the specialty by id. The response is score and short name")
     @GetMapping("/get-candidates/{specialtyId}")
-    public CommonResponseDto<List<CandidatesInfoResponseDto>> getCandidates(@PathVariable Long specialtyId){
-        CommonResponseDto<List<CandidatesInfoResponseDto>> responseDto = new CommonResponseDto<>();
-        try {
-            List<CandidatesInfoResponseDto> activeCandidateList = candidateService.getAllActiveBySpecId(specialtyId)
-                    .stream().map(Candidate::getApplicantApplication).map(x -> new CandidatesInfoResponseDto(
-                            x.getTestScore(),
-                            x.getMiddleName().charAt(0) + x.getFirstName().charAt(0) + x.getLastName()))
-                    .toList();
-            responseDto.setData(activeCandidateList);
-            responseDto.setStatus(200);
-            responseDto.setMessage("OK");
-            return responseDto;
-        }catch (BaseBusinessLogicException ex){
-            responseDto.setStatus(204);
-            responseDto.setMessage(ex.getMessage());
-            return responseDto;
-        }
+    public CommonResponseDto<List<CandidatesInfoResponseDto>> getCandidates(
+            @PathVariable Long specialtyId
+    ){
+        List<CandidatesInfoResponseDto> activeCandidateList = candidateService.getAllActiveBySpecId(specialtyId)
+                .stream().map(Candidate::getApplicantApplication).map(x -> new CandidatesInfoResponseDto(
+                        x.getTestScore(),
+                        x.getMiddleName().charAt(0) + x.getFirstName().charAt(0) + x.getLastName()))
+                .toList();
+
+        return new CommonResponseDto<List<CandidatesInfoResponseDto>>().setOk().setData(activeCandidateList);
     }
 
 }

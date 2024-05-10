@@ -18,19 +18,11 @@ public class PersonController {
     private final PersonDataMapper personDataMapper;
     private final PersonService personService;
 
-
     @GetMapping("/find-by-pn")
     public CommonResponseDto<PersonDataResponseDto> findByPN(@RequestParam Long pn){
-        CommonResponseDto<PersonDataResponseDto> response = new CommonResponseDto<>();
-        //TEST
-        try {
-            response.setOk().setData(personDataMapper
-                    .entityToDto(personService.findByPN(pn)));
-            return response;
-        } catch (BaseBusinessLogicException ex) {
-            response.setStatus(204);
-            response.setMessage("No content");
-            return response;
-        }
+        PersonDataResponseDto personDataResponseDto = personDataMapper
+                .entityToDto(personService.findByPN(pn));
+
+        return new CommonResponseDto<PersonDataResponseDto>().setOk().setData(personDataResponseDto);
     }
 }
