@@ -6,10 +6,7 @@ import com.example.universitymanagementsystem.dto.response.CommonResponseDto;
 import com.example.universitymanagementsystem.entity.applyment.Candidate;
 import com.example.universitymanagementsystem.entity.uni_struct.Faculty;
 import com.example.universitymanagementsystem.entity.uni_struct.Specialty;
-import com.example.universitymanagementsystem.exception.ApplicantApplicationAlreadyAppliedException;
-import com.example.universitymanagementsystem.exception.CandidateNotFoundException;
-import com.example.universitymanagementsystem.exception.SpecialtyAdmissionInvalidException;
-import com.example.universitymanagementsystem.exception.SpecialtyAdmissionNotFoundException;
+import com.example.universitymanagementsystem.exception.BaseBusinessLogicException;
 import com.example.universitymanagementsystem.mapper.RegisterApplicantApplicationMapper;
 import com.example.universitymanagementsystem.service.ApplicantApplicationService;
 import com.example.universitymanagementsystem.service.CandidateService;
@@ -43,7 +40,7 @@ public class ApplicantController {
             responseDto.setStatus(201);
             responseDto.setMessage("Created");
 
-        } catch (ApplicantApplicationAlreadyAppliedException | SpecialtyAdmissionInvalidException ex) {
+        } catch (BaseBusinessLogicException ex) {
             responseDto.setStatus(400);
             responseDto.setMessage(ex.getMessage());
             return responseDto;
@@ -63,11 +60,9 @@ public class ApplicantController {
                     .stream()
                     .map(x -> new Faculty(x.getFaculty().getId(), x.getFaculty().getName()))
                     .collect(Collectors.toSet());
-            responseDto.setStatus(200);
-            responseDto.setMessage("OK");
-            responseDto.setData(faculties);
+            responseDto.setOk().setData(faculties);
             return responseDto;
-        } catch (SpecialtyAdmissionNotFoundException ex) {
+        } catch (BaseBusinessLogicException ex) {
             responseDto.setStatus(204);
             responseDto.setMessage(ex.getMessage());
             return responseDto;
@@ -88,7 +83,7 @@ public class ApplicantController {
             responseDto.setStatus(200);
             responseDto.setMessage("OK");
             return responseDto;
-        }catch (SpecialtyAdmissionNotFoundException ex){
+        }catch (BaseBusinessLogicException ex){
             responseDto.setStatus(204);
             responseDto.setMessage(ex.getMessage());
             return responseDto;
@@ -109,7 +104,7 @@ public class ApplicantController {
             responseDto.setStatus(200);
             responseDto.setMessage("OK");
             return responseDto;
-        }catch (CandidateNotFoundException ex){
+        }catch (BaseBusinessLogicException ex){
             responseDto.setStatus(204);
             responseDto.setMessage(ex.getMessage());
             return responseDto;

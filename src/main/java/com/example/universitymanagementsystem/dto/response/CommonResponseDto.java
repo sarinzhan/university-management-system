@@ -13,4 +13,10 @@ public class CommonResponseDto<T> {
     private T data;
     private Object message;
     private Integer status;
+
+    public CommonResponseDto<T> setOk(){
+        this.message="OK";
+        this.status=200;
+        return this;
+    }
 }

@@ -2,7 +2,7 @@ package com.example.universitymanagementsystem.controller;
 
 import com.example.universitymanagementsystem.dto.response.CommonResponseDto;
 import com.example.universitymanagementsystem.dto.response.PersonDataResponseDto;
-import com.example.universitymanagementsystem.exception.PersonNotFoundException;
+import com.example.universitymanagementsystem.exception.BaseBusinessLogicException;
 import com.example.universitymanagementsystem.mapper.PersonDataMapper;
 import com.example.universitymanagementsystem.service.PersonService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,12 +24,10 @@ public class PersonController {
         CommonResponseDto<PersonDataResponseDto> response = new CommonResponseDto<>();
         //TEST
         try {
-            response.setData(personDataMapper
+            response.setOk().setData(personDataMapper
                     .entityToDto(personService.findByPN(pn)));
-            response.setStatus(200);
-            response.setMessage("OK");
             return response;
-        } catch (PersonNotFoundException ex) {
+        } catch (BaseBusinessLogicException ex) {
             response.setStatus(204);
             response.setMessage("No content");
             return response;
