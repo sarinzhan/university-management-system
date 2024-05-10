@@ -130,9 +130,8 @@ public class ApplicantController {
                             x.getLastName(),
                             x.getTestScore(),
                             false))
-                    .sorted(Comparator.comparingDouble(CandidatesInfoResponseDto::getTestScore))
-                    .toList()
-                    .reversed();
+                    .sorted(Comparator.comparingDouble(CandidatesInfoResponseDto::getTestScore).reversed())
+                    .toList();
 
             SpecialtyAdmission specialtyAdmission = specialtyAdmissionService.getActiveAdmissions()
                     .stream()
