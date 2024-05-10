@@ -23,6 +23,7 @@ public class PersonController {
     private final PersonService personService;
 
     @GetMapping("/find-by-pn")
+    @PreAuthorize("hasRole('ADMIN')")
     public CommonResponseDto<PersonFullNameDto> findByPN(@RequestParam Long pn){
         CommonResponseDto<PersonFullNameDto> response = new CommonResponseDto<>();
         //TEST

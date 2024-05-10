@@ -26,6 +26,7 @@ public class User extends BaseEntity implements UserDetails{
     private Boolean isActive;
 
     private String password;
+
     private String login;
 
 
@@ -33,33 +34,33 @@ public class User extends BaseEntity implements UserDetails{
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
     }
-//    @Override
-//    public String getPassword(){
-//        return password;
-//    }
+    @Override
+    public String getPassword(){
+        return password;
+    }
 
     @Override
     public String getUsername() {
-        return null;
+        return login;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return !isActive;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return !isActive;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return !isActive;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return !isActive;
     }
 }
