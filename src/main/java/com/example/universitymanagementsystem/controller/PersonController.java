@@ -15,15 +15,16 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class PersonController {
 
-    private final PersonDataMapper personFullNameMapper;
+    private final PersonDataMapper personDataMapper;
     private final PersonService personService;
+
 
     @GetMapping("/find-by-pn")
     public CommonResponseDto<PersonDataResponseDto> findByPN(@RequestParam Long pn){
         CommonResponseDto<PersonDataResponseDto> response = new CommonResponseDto<>();
         //TEST
         try {
-            response.setData(personFullNameMapper
+            response.setData(personDataMapper
                     .entityToDto(personService.findByPN(pn)));
             response.setStatus(200);
             response.setMessage("OK");

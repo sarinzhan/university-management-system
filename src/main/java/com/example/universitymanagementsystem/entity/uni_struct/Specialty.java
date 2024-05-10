@@ -2,6 +2,8 @@ package com.example.universitymanagementsystem.entity.uni_struct;
 
 import com.example.universitymanagementsystem.entity.BaseEntity;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.*;
 import org.mapstruct.Mapping;
 
@@ -11,8 +13,9 @@ import org.mapstruct.Mapping;
 @NoArgsConstructor
 public class Specialty extends BaseEntity {
     private String name;
-    private String degree;
-    private String edu_form;
+    @ManyToOne
+    @JoinColumn(name = "department_id", nullable = false)
+    private Department department;
 
     public Specialty(Long id,String name) {
         super(id);
