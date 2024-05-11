@@ -1,5 +1,6 @@
 package com.example.universitymanagementsystem.configuration;
 
+
 import com.example.universitymanagementsystem.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -37,10 +38,9 @@ public class AppConfiguration {
                         .requestMatchers("/swagger-ui/**","/v3/api-docs").permitAll()
                         .requestMatchers("/applicant/register-applicant").permitAll()
                         .requestMatchers("/person/find-by-pn").permitAll()
-                        .requestMatchers("/**").hasRole("ADMIN")
                         .anyRequest().authenticated());
         httpSecurity.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
+        
         return httpSecurity.build();
     }
 

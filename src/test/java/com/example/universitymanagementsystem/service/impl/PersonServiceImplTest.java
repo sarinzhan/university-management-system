@@ -1,8 +1,6 @@
 package com.example.universitymanagementsystem.service.impl;
 
 import com.example.universitymanagementsystem.entity.PersonData;
-import com.example.universitymanagementsystem.exception.PersonNotFoundException;
-import com.example.universitymanagementsystem.exception.PersonalNumberAlreadyExistException;
 import com.example.universitymanagementsystem.repository.PersonRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

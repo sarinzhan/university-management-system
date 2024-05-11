@@ -1,7 +1,7 @@
 package com.example.universitymanagementsystem.service.impl;
 
 import com.example.universitymanagementsystem.entity.applyment.SpecialtyAdmission;
-import com.example.universitymanagementsystem.exception.SpecialtyAdmissionNotFoundException;
+import com.example.universitymanagementsystem.exception.BaseBusinessLogicException;
 import com.example.universitymanagementsystem.repository.SpecialtyAdmissionRepository;
 import com.example.universitymanagementsystem.service.SpecialtyAdmissionService;
 import lombok.RequiredArgsConstructor;
@@ -16,10 +16,10 @@ public class SpecialtyAdmissionServiceImpl implements SpecialtyAdmissionService 
 
 
     @Override
-    public List<SpecialtyAdmission> getActiveAdmissions() throws SpecialtyAdmissionNotFoundException {
+    public List<SpecialtyAdmission> getActiveAdmissions(){
         List<SpecialtyAdmission> allActiveBySpecId = specialtyAdmissionRepository.getAllActiveBySpecId();
         if(allActiveBySpecId.isEmpty()){
-            throw new SpecialtyAdmissionNotFoundException("Наборы не объявлены");
+            throw new BaseBusinessLogicException("Наборы не объявлены");
         }else {
             return allActiveBySpecId;
         }
