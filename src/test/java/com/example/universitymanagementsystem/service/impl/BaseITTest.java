@@ -1,6 +1,6 @@
 package com.example.universitymanagementsystem.service.impl;
 
-import com.example.universitymanagementsystem.configuration.SecurityConfiguration;
+import com.example.universitymanagementsystem.configuration.AppConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
@@ -11,7 +11,7 @@ import org.springframework.test.context.TestPropertySource;
 // контекст поднимется на свободном рандомном порту
 @TestPropertySource(locations = "classpath:application-test.properties")
 // указываем
-@Import(value = SecurityConfiguration.class)
+@Import(value = AppConfiguration.class)
 @AutoConfigureMockMvc
 public class BaseITTest {
 }

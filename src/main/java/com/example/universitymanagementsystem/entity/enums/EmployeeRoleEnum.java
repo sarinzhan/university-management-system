@@ -1,4 +1,4 @@
-package com.example.universitymanagementsystem.entity;
+package com.example.universitymanagementsystem.entity.enums;
 
 public enum EmployeeRoleEnum {
     DEAN,

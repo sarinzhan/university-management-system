@@ -16,7 +16,7 @@ public class User extends BaseEntity implements UserDetails{
 
     @ManyToOne
     @JoinColumn(name = "user_role_id")
-    private UserRole role;
+    private UserRole userRole;
 
     @ManyToOne
     @JoinColumn(name = "person_data_id")
@@ -32,7 +32,7 @@ public class User extends BaseEntity implements UserDetails{
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return Collections.singletonList(userRole);
     }
     @Override
     public String getPassword(){
@@ -46,21 +46,21 @@ public class User extends BaseEntity implements UserDetails{
 
     @Override
     public boolean isAccountNonExpired() {
-        return !isActive;
+        return isActive;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return !isActive;
+        return isActive;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return !isActive;
+        return isActive;
     }
 
     @Override
     public boolean isEnabled() {
-        return !isActive;
+        return isActive;
     }
 }

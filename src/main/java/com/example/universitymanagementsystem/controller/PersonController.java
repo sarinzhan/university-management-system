@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
 @Tag(name = "Person", description = "APIs for person")
 @RequestMapping("/person")
 @RestController
@@ -23,10 +22,9 @@ public class PersonController {
     private final PersonService personService;
 
     @GetMapping("/find-by-pn")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMISSION_COMMISSION')")
     public CommonResponseDto<PersonFullNameDto> findByPN(@RequestParam Long pn){
         CommonResponseDto<PersonFullNameDto> response = new CommonResponseDto<>();
-        //TEST
         try {
             response.setData(personFullNameMapper
                     .entityToDto(personService.findByPN(pn)));
