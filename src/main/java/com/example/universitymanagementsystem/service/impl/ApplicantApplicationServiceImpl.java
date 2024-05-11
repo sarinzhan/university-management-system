@@ -45,9 +45,10 @@ public class ApplicantApplicationServiceImpl implements ApplicantApplicationServ
                 .ifPresent(x -> {
                     throw new BaseBusinessLogicException("Вы уже числитесь кандидатом по направлению " + x.getApplicantApplication().getSpecialty().getName());});
 
-                specialtyAdmissionRepository
+        specialtyAdmissionRepository
                 .getActiveBySpecId(app.getSpecialty().getId())
                 .orElseThrow(() -> new BaseBusinessLogicException("Набор по выбранному направлению не активен"));
+
         ApplicantApplication applicantApplication = applicantApplicationRepository.save(app);
 
         VerificationCode verificationCode = verificationCodeService.generateCode(applicantApplication.getId());
@@ -57,7 +58,7 @@ public class ApplicantApplicationServiceImpl implements ApplicantApplicationServ
         return applicantApplicationRepository.save(app).getId();
     }
 
-    private String generateText(String code,ApplicantApplication applicantApplication){
+    public String generateText(String code,ApplicantApplication applicantApplication){
         return " \n" +
                 applicantApplication.getFirstName() +", здравствуйте! \n" +
                 " \n" +
