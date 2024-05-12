@@ -28,13 +28,10 @@ public class AuthController {
 
         TokenResponseDto tokenResponseDto = authService.authenticateUser(loginRequestDto);
         if(Objects.nonNull(tokenResponseDto.getToken())) {
-            responseDto.setData(tokenResponseDto);
-            responseDto.setStatus(200);
-            responseDto.setMessage("OK");
-            return responseDto;
+            return new CommonResponseDto<TokenResponseDto>().setData(tokenResponseDto).setOk();
         }
         responseDto.setMessage("Неправильный логин или пароль");
-        responseDto.setStatus(401);
+        responseDto.setStatus(400);
         return responseDto;
     }
 }
