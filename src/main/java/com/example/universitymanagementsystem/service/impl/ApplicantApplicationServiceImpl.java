@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
+import java.util.List;
 import java.util.Random;
 
 @Service
@@ -45,7 +46,7 @@ public class ApplicantApplicationServiceImpl implements ApplicantApplicationServ
                 .ifPresent(x -> {
                     throw new BaseBusinessLogicException("Вы уже числитесь кандидатом по направлению " + x.getApplicantApplication().getSpecialty().getName());});
 
-                specialtyAdmissionRepository
+        specialtyAdmissionRepository
                 .getActiveBySpecId(app.getSpecialty().getId())
                 .orElseThrow(() -> new BaseBusinessLogicException("Набор по выбранному направлению не активен"));
         ApplicantApplication applicantApplication = applicantApplicationRepository.save(app);
@@ -55,6 +56,14 @@ public class ApplicantApplicationServiceImpl implements ApplicantApplicationServ
         String message = generateText(verificationCode.getCode(),applicantApplication);
         emailService.sendMessage(app.getEmail(), subject, message);
         return applicantApplicationRepository.save(app).getId();
+    }
+    @Override
+    public List<ApplicantApplication> getEmailVerifiedApplicants(){
+        List<ApplicantApplication> applicantApplicationsList = applicantApplicationRepository.getAllNonCheckedActivated();
+        if(applicantApplicationsList.isEmpty()){
+            throw new BaseBusinessLogicException("Нету заявок абитуриентов на проверку");
+        }
+        return applicantApplicationsList;
     }
 
     private String generateText(String code,ApplicantApplication applicantApplication){

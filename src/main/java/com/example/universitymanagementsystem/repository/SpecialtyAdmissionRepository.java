@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface SpecialtyAdmissionRepository extends JpaRepository<SpecialtyAdmission,Long> {
     @Query(value = "select s from specialty_admission s " +
-            "where s.startDate < CURRENT_DATE and CURRENT_DATE > s.endDate and s.specialty.id = :specialtyId")
+            "where s.startDate < local_datetime and local_datetime < s.endDate and s.specialty.id = :specialtyId")
     Optional<SpecialtyAdmission> getActiveBySpecId(Long specialtyId);
 
     @Query(value = "select s from specialty_admission s " +
