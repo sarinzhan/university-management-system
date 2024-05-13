@@ -8,7 +8,6 @@ import com.example.universitymanagementsystem.service.PersonService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
 @Tag(name = "Person", description = "APIs for person")
 @RequestMapping("/person")
 @RestController
