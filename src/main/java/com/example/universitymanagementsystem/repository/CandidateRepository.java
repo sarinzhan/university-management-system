@@ -13,12 +13,10 @@ public interface CandidateRepository extends JpaRepository<Candidate,Long> {
 
     @Query("select c from Candidate c " +
             "where c.applicantApplication.personalNumber = :pn " +
-            "and c.specialtyAdmission.startDate < CURRENT_DATE " +
-            "and c.specialtyAdmission.endDate > CURRENT_DATE ")
+            "and now() between c.specialtyAdmission.startDate and c.specialtyAdmission.endDate")
     Optional<Candidate> findActiveByPn(Long pn);
 
     @Query("select c from Candidate c " +
-            "where c.specialtyAdmission.startDate <CURRENT_DATE " +
-            "and c.specialtyAdmission.endDate > CURRENT_DATE")
+            "where now() between c.specialtyAdmission.startDate and c.specialtyAdmission.endDate")
     List<Candidate> findAllActive();
 }

@@ -43,7 +43,7 @@ public class ApplicantApplicationServiceImpl implements ApplicantApplicationServ
         }
         candidateRepository.findActiveByPn(app.getPersonalNumber())
                 .ifPresent(x -> {
-                    throw new BaseBusinessLogicException("Вы уже числитесь кандидатом по направлению " + x.getApplicantApplication().getSpecialty().getName());});
+                    throw new BaseBusinessLogicException("Вы уже числитесь кандидатом по направлению \"%s\"".formatted(x.getApplicantApplication().getSpecialty().getName()));});
 
         specialtyAdmissionRepository
                 .getActiveBySpecId(app.getSpecialty().getId())
@@ -59,6 +59,12 @@ public class ApplicantApplicationServiceImpl implements ApplicantApplicationServ
     }
 
     public String generateText(String code,ApplicantApplication applicantApplication){
+        if(code.isEmpty() ||
+                applicantApplication.getFirstName().isEmpty() ||
+                applicantApplication.getSpecialty().getName().isEmpty()
+        ){
+            throw new BaseBusinessLogicException("Невозможно отправить код подтверждения");
+        }
         return " \n" +
                 applicantApplication.getFirstName() +", здравствуйте! \n" +
                 " \n" +
