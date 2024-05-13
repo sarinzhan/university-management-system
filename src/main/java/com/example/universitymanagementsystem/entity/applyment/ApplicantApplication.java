@@ -52,7 +52,7 @@ public class ApplicantApplication extends BaseEntity {
     private String nationality;
 
     @Column(name = "passport_id")
-    private Long passportId;
+    private String passportId;
 
     private String country;
 
@@ -70,7 +70,7 @@ public class ApplicantApplication extends BaseEntity {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "is_activated")
+    @Column(name = "is_email_activated")
     private Boolean isActivated;
 
     @Column(name = "is_accepted")
