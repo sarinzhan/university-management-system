@@ -2,5 +2,5 @@ package com.example.universitymanagementsystem.service;
 
 public interface ApplicantVerificationFacade {
 
-    void transferOfApplicantToCandidate(Long id, String message, boolean verify);
+    Boolean transferOfApplicantToCandidate(Long applicantApplicationId, String reason, Boolean decision);
 }

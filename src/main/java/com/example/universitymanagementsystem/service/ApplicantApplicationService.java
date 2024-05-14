@@ -8,5 +8,5 @@ import javax.mail.MessagingException;
 public interface ApplicantApplicationService {
     Long registerApplicantApplication(ApplicantApplication app);
 
-    ApplicantApplication verificationOfApplicantApplication(Long id, String message, boolean verify);
+    Long saveApp(ApplicantApplication applicantApplication);
 }

@@ -85,13 +85,11 @@ public class ApplicantController {
     public CommonResponseDto<Void> dataVerification(
             @RequestBody ApplicantApplicationVerifyRequestDto applicantApplicationVerifyRequestDto
     ) {
-
         this.applicantVerificationFacade.transferOfApplicantToCandidate(
                 applicantApplicationVerifyRequestDto.getApplicantApplicationId(),
                 applicantApplicationVerifyRequestDto.getMessage(),
                 applicantApplicationVerifyRequestDto.isVerify()
         );
-
         return new CommonResponseDto<Void>().setOk();
     }
 }
