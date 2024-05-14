@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class ApplicantApplicationVerifyRequestDto {
-    private Long applicantApplication;
+    private Long applicantApplicationId;
     private String message;
     private boolean verify;
 }

@@ -1,7 +1,9 @@
 package com.example.universitymanagementsystem.service.impl;
 
+import com.example.universitymanagementsystem.entity.applyment.ApplicantApplication;
 import com.example.universitymanagementsystem.entity.applyment.Candidate;
 import com.example.universitymanagementsystem.exception.BaseBusinessLogicException;
+import com.example.universitymanagementsystem.mapper.ApplicantApplicationMapper;
 import com.example.universitymanagementsystem.repository.CandidateRepository;
 import com.example.universitymanagementsystem.service.CandidateService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CandidateServiceImpl implements CandidateService {
     private final CandidateRepository candidateRepository;
+    private final ApplicantApplicationMapper applicantApplicationMapper;
 
     @Override
     public List<Candidate> getAllActiveBySpecId(Long specialtyId) {
@@ -27,4 +30,10 @@ public class CandidateServiceImpl implements CandidateService {
         }
         return candidateList;
     }
+
+    @Override
+    public void addCandidateFromApplicant(ApplicantApplication app) {
+        this.candidateRepository.save(applicantApplicationMapper.applicantApplicationToCandidate(app));
+    }
 }
+

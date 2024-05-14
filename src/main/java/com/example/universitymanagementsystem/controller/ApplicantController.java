@@ -1,5 +1,6 @@
 package com.example.universitymanagementsystem.controller;
 
+import com.example.universitymanagementsystem.dto.request.ApplicantApplicationVerifyRequestDto;
 import com.example.universitymanagementsystem.dto.request.RegisterApplicantApplicationDto;
 import com.example.universitymanagementsystem.dto.response.CandidatesInfoResponseDto;
 import com.example.universitymanagementsystem.dto.response.CommonResponseDto;
@@ -79,4 +80,14 @@ public class ApplicantController {
         return new CommonResponseDto<List<CandidatesInfoResponseDto>>().setOk().setData(activeCandidateList);
     }
 
+    @PostMapping(value = "/verify")
+    public CommonResponseDto<Void> dataVerification(
+            @RequestBody ApplicantApplicationVerifyRequestDto applicantApplicationVerifyRequestDto
+    ) {
+
+        this.applicantApplicationService.verificationOfApplicantApplication(applicantApplicationVerifyRequestDto.getApplicantApplicationId(),
+                applicantApplicationVerifyRequestDto.getMessage(), applicantApplicationVerifyRequestDto.isVerify());
+
+        return new CommonResponseDto<Void>().setOk();
+    }
 }

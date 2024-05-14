@@ -15,6 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
+import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 @Service
@@ -26,6 +28,7 @@ public class ApplicantApplicationServiceImpl implements ApplicantApplicationServ
     private final SpecialtyAdmissionRepository specialtyAdmissionRepository;
     private final VerificationCodeService verificationCodeService;
     private final EmailService emailService;
+    private final CandidateServiceImpl candidateService;
 
     /**
      * If applicant by specified PN already waiting for verify it will throw exception.
@@ -57,6 +60,43 @@ public class ApplicantApplicationServiceImpl implements ApplicantApplicationServ
         return applicantApplicationRepository.save(app).getId();
     }
 
+    @Override
+    public void verificationOfApplicantApplication(Long id, String message, boolean verify) {
+        if (id == 0) {
+            throw new BaseBusinessLogicException("Id заявителя не может равняться 0!");
+        }
+
+        if (this.applicantApplicationRepository.getAllNonCheckedActivated().isEmpty()) {
+            throw new BaseBusinessLogicException("Не проверенных заявителей нет!");
+        }
+
+        if (this.applicantApplicationRepository.findById(id).isEmpty()) {
+            throw new BaseBusinessLogicException("Не найдено заявителя с id: " + id);
+        }
+
+        ApplicantApplication applicantApplication = this.applicantApplicationRepository.findById(id).get();
+
+        if (verify) {
+            applicantApplication.setIsDeclined(false);
+            applicantApplication.setIsChecked(true);
+            applicantApplication.setIsAccepted(true);
+
+            message = checkingMessage(message, true, applicantApplication.getFirstName());
+
+            this.emailService.sendMessage(applicantApplication.getEmail(), "Рассмотрение заявки на поступление", message);
+
+            candidateService.addCandidateFromApplicant(applicantApplication);
+        } else {
+            applicantApplication.setIsDeclined(true);
+            applicantApplication.setIsChecked(true);
+            applicantApplication.setIsAccepted(false);
+
+            message = checkingMessage(message, false, applicantApplication.getFirstName());
+
+            this.emailService.sendMessage(applicantApplication.getEmail(), "Рассмотрение заявки на поступление", message);
+        }
+    }
+
     private String generateText(String code,ApplicantApplication applicantApplication){
         return " \n" +
                 applicantApplication.getFirstName() +", здравствуйте! \n" +
@@ -73,5 +113,17 @@ public class ApplicantApplicationServiceImpl implements ApplicantApplicationServ
                 "Приемная комиссия КРСУ";
     }
 
-
+    private String checkingMessage(String message, boolean verify, String nameOfApplicant) {
+        if (verify && (Objects.isNull(message) || message.trim().isEmpty())) {
+            return nameOfApplicant + ", здравствуйте! \n" +
+                    " \n" +
+                    "Поздравляем!" + "\n" +
+                    " \n" +
+                    "Вы были рекомендованы к зачислению!";
+        } else {
+            return nameOfApplicant + ", здравствуйте! \n" +
+                    " \n" +
+                    "Извините, вы не были рекомендованы к зачислению!";
+        }
+    }
 }
