@@ -7,8 +7,7 @@ import com.example.universitymanagementsystem.dto.response.CommonResponseDto;
 import com.example.universitymanagementsystem.entity.applyment.Candidate;
 import com.example.universitymanagementsystem.entity.uni_struct.Faculty;
 import com.example.universitymanagementsystem.entity.uni_struct.Specialty;
-import com.example.universitymanagementsystem.exception.BaseBusinessLogicException;
-import com.example.universitymanagementsystem.facade.ApplicantVerificationFacade;
+import com.example.universitymanagementsystem.service.impl.ApplicantVerificationFacadeImpl;
 import com.example.universitymanagementsystem.mapper.RegisterApplicantApplicationMapper;
 import com.example.universitymanagementsystem.service.ApplicantApplicationService;
 import com.example.universitymanagementsystem.service.CandidateService;
@@ -30,7 +29,7 @@ public class ApplicantController {
     private final SpecialtyAdmissionService specialtyAdmissionService;
     private final CandidateService candidateService;
     private final RegisterApplicantApplicationMapper registerApplicantApplicationMapper;
-    private final ApplicantVerificationFacade applicantVerificationFacade;
+    private final ApplicantVerificationFacadeImpl applicantVerificationFacade;
 
     @Operation(summary = "Register applicant",description = "Register applicant application without activating.The response is applicant id.")
     @PostMapping("/register-applicant")
