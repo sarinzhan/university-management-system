@@ -27,4 +27,10 @@ public class CandidateServiceImpl implements CandidateService {
         }
         return candidateList;
     }
+
+    @Override
+    public void addCandidate(Candidate candidate) {
+        this.candidateRepository.save(candidate);
+    }
 }
+

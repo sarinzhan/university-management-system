@@ -1,6 +1,5 @@
 package com.example.universitymanagementsystem.service.impl;
 
-import com.example.universitymanagementsystem.exception.UserNotFoundException;
 import com.example.universitymanagementsystem.repository.UserRepository;
 import com.example.universitymanagementsystem.service.UserService;
 import lombok.RequiredArgsConstructor;

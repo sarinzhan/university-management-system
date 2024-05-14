@@ -5,11 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.PropertySource;
 
 @SpringBootApplication
-@PropertySource("classpath:application-datasource.properties")
 public class UniversityManagementSystemApplication {
     public static void main(String[] args) {
         SpringApplication.run(UniversityManagementSystemApplication.class, args);
     }
-
 }
 

@@ -1,0 +1,71 @@
+package com.example.universitymanagementsystem.service.impl;
+
+import com.example.universitymanagementsystem.entity.applyment.ApplicantApplication;
+import com.example.universitymanagementsystem.entity.applyment.Candidate;
+import com.example.universitymanagementsystem.exception.BaseBusinessLogicException;
+import com.example.universitymanagementsystem.repository.ApplicantApplicationRepository;
+import com.example.universitymanagementsystem.service.ApplicantApplicationService;
+import com.example.universitymanagementsystem.service.ApplicantVerificationFacade;
+import com.example.universitymanagementsystem.service.EmailService;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+
+import java.util.Objects;
+
+@Component
+@RequiredArgsConstructor
+public class ApplicantVerificationFacadeImpl implements ApplicantVerificationFacade {
+    private final CandidateServiceImpl candidateService;
+    private final ApplicantApplicationRepository applicantApplicationRepository;
+    private final ApplicantApplicationService applicantApplicationService;
+    private final EmailService emailService;
+
+    @Override
+    @Transactional
+    public Boolean transferOfApplicantToCandidate(Long applicantApplicationId, String reason, Boolean decision) {
+        ApplicantApplication applicantApplication =  applicantApplicationRepository.findById(applicantApplicationId)
+                .orElseThrow(() -> new BaseBusinessLogicException("Не найдена заявка абитуриента"));
+
+        applicantApplication.setIsChecked(true);
+        applicantApplication.setIsDeclined(!decision);
+        applicantApplication.setIsAccepted(decision);
+        applicantApplicationService.saveApp(applicantApplication);
+
+        String message = checkingMessage(reason,decision,applicantApplication.getFirstName());
+        emailService.sendMessage(applicantApplication.getEmail(),"Заявка на поступление",message);
+
+        Candidate candidate = Candidate
+                .builder()
+                .applicantApplication(applicantApplication)
+                .department(applicantApplication.getDepartment())
+                .testScore(applicantApplication.getTestScore())
+                .specialtyAdmission(applicantApplication.getSpecialtyAdmission())
+                .build();
+        candidateService.addCandidate(candidate);
+        return true;
+    }
+
+    private String checkingMessage(String message, Boolean verify, String nameOfApplicant) {
+        if (verify) {
+            return nameOfApplicant + ", здравствуйте! \n" +
+                    " \n" +
+                    "Поздравляем!" + "\n" +
+                    " \n" +
+                    "Вы были рекомендованы к зачислению!";
+        } else if(Objects.nonNull(message)) {
+            return nameOfApplicant + ", здравствуйте! \n" +
+                    " \n" +
+                    "Извините, вы не были рекомендованы к зачислению!" +
+                    "По причинине: " + message;
+        }else {
+            return nameOfApplicant + ", здравствуйте! \n" +
+                    " \n" +
+                    "Извините, вы не были рекомендованы к зачислению!";
+        }
+    }
+
+
+
+}
+

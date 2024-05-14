@@ -1,12 +1,15 @@
 package com.example.universitymanagementsystem.controller;
 
+import com.example.universitymanagementsystem.dto.request.ApplicantApplicationVerifyRequestDto;
 import com.example.universitymanagementsystem.dto.request.RegisterApplicantApplicationDto;
+import com.example.universitymanagementsystem.dto.response.ApplicantApplicationVerifyResponseDto;
 import com.example.universitymanagementsystem.dto.response.CandidatesInfoResponseDto;
 import com.example.universitymanagementsystem.dto.response.CommonResponseDto;
 import com.example.universitymanagementsystem.entity.applyment.Candidate;
 import com.example.universitymanagementsystem.entity.uni_struct.Faculty;
 import com.example.universitymanagementsystem.entity.uni_struct.Specialty;
-import com.example.universitymanagementsystem.exception.BaseBusinessLogicException;
+import com.example.universitymanagementsystem.service.ApplicantVerificationFacade;
+import com.example.universitymanagementsystem.mapper.ApplicantApplicationVerifyResponseMapper;
 import com.example.universitymanagementsystem.mapper.RegisterApplicantApplicationMapper;
 import com.example.universitymanagementsystem.service.ApplicantApplicationService;
 import com.example.universitymanagementsystem.service.CandidateService;
@@ -24,10 +27,15 @@ import java.util.stream.Collectors;
 @RequestMapping("/applicant")
 @RequiredArgsConstructor
 public class ApplicantController {
+
     private final ApplicantApplicationService applicantApplicationService;
     private final SpecialtyAdmissionService specialtyAdmissionService;
     private final CandidateService candidateService;
+
+
     private final RegisterApplicantApplicationMapper registerApplicantApplicationMapper;
+    private final ApplicantVerificationFacade applicantVerificationFacade;
+    private final ApplicantApplicationVerifyResponseMapper applicantApplicationVerifyResponseMapper;
 
     @Operation(summary = "Register applicant",description = "Register applicant application without activating.The response is applicant id.")
     @PostMapping("/register-applicant")
@@ -79,4 +87,24 @@ public class ApplicantController {
         return new CommonResponseDto<List<CandidatesInfoResponseDto>>().setOk().setData(activeCandidateList);
     }
 
+    @PostMapping(value = "/verify")
+    public CommonResponseDto<Void> dataVerification(
+            @RequestBody ApplicantApplicationVerifyRequestDto applicantApplicationVerifyRequestDto
+    ) {
+        this.applicantVerificationFacade.transferOfApplicantToCandidate(
+                applicantApplicationVerifyRequestDto.getApplicantApplicationId(),
+                applicantApplicationVerifyRequestDto.getMessage(),
+                applicantApplicationVerifyRequestDto.isVerify()
+        );
+        return new CommonResponseDto<Void>().setOk();
+    }
+    @GetMapping("/get-all-to-verify")
+    public CommonResponseDto<List<ApplicantApplicationVerifyResponseDto>> getToVerify(){
+        return new CommonResponseDto<List<ApplicantApplicationVerifyResponseDto>>()
+                .setOk()
+                .setData(
+                        applicantApplicationVerifyResponseMapper
+                                .listEntityToDto(applicantApplicationService.getEmailVerifiedApplicants())
+                );
+    }
 }

@@ -19,36 +19,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import java.util.Properties;
 
 @Configuration
-@EnableWebSecurity
-@EnableMethodSecurity
 @RequiredArgsConstructor
 public class AppConfiguration {
-    private final JwtAuthenticationFilter authenticationFilter;
-
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity
-                .httpBasic(Customizer.withDefaults())
-                .cors(Customizer.withDefaults())
-                .csrf(AbstractHttpConfigurer::disable);
-        httpSecurity
-                .authorizeHttpRequests(request -> request
-                        .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/applicant/**").permitAll()
-                        .requestMatchers("/swagger-ui/**","/v3/api-docs").permitAll()
-                        .requestMatchers("/applicant/register-applicant").permitAll()
-                        .requestMatchers("/person/find-by-pn").permitAll()
-                        .anyRequest().authenticated());
-        httpSecurity.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
-        
-        return httpSecurity.build();
-    }
-
-    @Bean
-    public SmtpSettings smtpSettings() {
-        return new SmtpSettings();
-    }
-
     @Bean
     static GrantedAuthorityDefaults grantedAuthorityDefaults(){
         return new GrantedAuthorityDefaults("");
@@ -57,10 +29,12 @@ public class AppConfiguration {
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder(4);
     }
-
     @Bean
-    public Properties smtpProperties() {
-        SmtpSettings smtpSettings = smtpSettings();
+    public SmtpSettings smtpSettings() {
+        return new SmtpSettings();
+    }
+    @Bean
+    public Properties smtpProperties(SmtpSettings smtpSettings) {
 
         Properties props = new Properties();
         props.put("mail.smtp.host", smtpSettings.getHost());

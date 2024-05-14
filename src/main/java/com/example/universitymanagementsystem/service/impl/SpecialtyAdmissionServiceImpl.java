@@ -12,8 +12,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class SpecialtyAdmissionServiceImpl implements SpecialtyAdmissionService {
-    private final SpecialtyAdmissionRepository specialtyAdmissionRepository;
 
+    private final SpecialtyAdmissionRepository specialtyAdmissionRepository;
 
     @Override
     public List<SpecialtyAdmission> getActiveAdmissions(){

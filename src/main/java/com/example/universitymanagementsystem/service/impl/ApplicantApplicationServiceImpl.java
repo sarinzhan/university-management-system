@@ -6,20 +6,17 @@ import com.example.universitymanagementsystem.exception.*;
 import com.example.universitymanagementsystem.repository.ApplicantApplicationRepository;
 import com.example.universitymanagementsystem.repository.CandidateRepository;
 import com.example.universitymanagementsystem.repository.SpecialtyAdmissionRepository;
-import com.example.universitymanagementsystem.repository.VerificationCodeRepository;
 import com.example.universitymanagementsystem.service.ApplicantApplicationService;
 import com.example.universitymanagementsystem.service.EmailService;
 import com.example.universitymanagementsystem.service.VerificationCodeService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
-import java.util.Random;
+import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class ApplicantApplicationServiceImpl implements ApplicantApplicationService {
     private final CandidateRepository candidateRepository;
     private final ApplicantApplicationRepository applicantApplicationRepository;
@@ -45,19 +42,35 @@ public class ApplicantApplicationServiceImpl implements ApplicantApplicationServ
                 .ifPresent(x -> {
                     throw new BaseBusinessLogicException("Вы уже числитесь кандидатом по направлению " + x.getApplicantApplication().getSpecialty().getName());});
 
-                specialtyAdmissionRepository
+        specialtyAdmissionRepository
                 .getActiveBySpecId(app.getSpecialty().getId())
                 .orElseThrow(() -> new BaseBusinessLogicException("Набор по выбранному направлению не активен"));
         ApplicantApplication applicantApplication = applicantApplicationRepository.save(app);
 
         VerificationCode verificationCode = verificationCodeService.generateCode(applicantApplication.getId());
         String subject = "Подтверждение адреса электронной почты и активация кандидатуры";
-        String message = generateText(verificationCode.getCode(),applicantApplication);
+        String message = generateTextForEmailVer(verificationCode.getCode(),applicantApplication);
         emailService.sendMessage(app.getEmail(), subject, message);
         return applicantApplicationRepository.save(app).getId();
     }
+    @Override
+    public Long saveApp(ApplicantApplication applicantApplication) {
+        try {
+            return applicantApplicationRepository.save(applicantApplication).getId();
+        } catch (Exception ex) {
+            throw new BaseBusinessLogicException("Не удалось сохранить заявку абитуриента");
+        }
+    }
+    @Override
+    public List<ApplicantApplication> getEmailVerifiedApplicants(){
+        List<ApplicantApplication> applicantApplicationsList = applicantApplicationRepository.getAllNonCheckedActivated();
+        if(applicantApplicationsList.isEmpty()){
+            throw new BaseBusinessLogicException("Нету заявок абитуриентов на проверку");
+        }
+        return applicantApplicationsList;
+    }
 
-    private String generateText(String code,ApplicantApplication applicantApplication){
+    private String generateTextForEmailVer(String code, ApplicantApplication applicantApplication){
         return " \n" +
                 applicantApplication.getFirstName() +", здравствуйте! \n" +
                 " \n" +
@@ -72,6 +85,4 @@ public class ApplicantApplicationServiceImpl implements ApplicantApplicationServ
                 "С уважением, \n" +
                 "Приемная комиссия КРСУ";
     }
-
-
 }

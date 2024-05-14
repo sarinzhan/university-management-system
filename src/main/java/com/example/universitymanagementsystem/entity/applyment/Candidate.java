@@ -4,10 +4,16 @@ import com.example.universitymanagementsystem.entity.BaseEntity;
 import com.example.universitymanagementsystem.entity.uni_struct.Department;
 import jakarta.persistence.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Candidate extends BaseEntity {
     @OneToOne
     @JoinColumn(name = "applicant_application_id")
