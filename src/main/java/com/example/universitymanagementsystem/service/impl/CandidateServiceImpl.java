@@ -1,6 +1,5 @@
 package com.example.universitymanagementsystem.service.impl;
 
-import com.example.universitymanagementsystem.entity.applyment.ApplicantApplication;
 import com.example.universitymanagementsystem.entity.applyment.Candidate;
 import com.example.universitymanagementsystem.exception.BaseBusinessLogicException;
 import com.example.universitymanagementsystem.mapper.ApplicantApplicationMapper;
@@ -32,8 +31,8 @@ public class CandidateServiceImpl implements CandidateService {
     }
 
     @Override
-    public void addCandidateFromApplicant(ApplicantApplication app) {
-        this.candidateRepository.save(applicantApplicationMapper.applicantApplicationToCandidate(app));
+    public void addCandidate(Candidate candidate) {
+        this.candidateRepository.save(candidate);
     }
 }
 

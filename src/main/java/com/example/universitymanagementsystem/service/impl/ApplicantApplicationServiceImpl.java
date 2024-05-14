@@ -28,7 +28,6 @@ public class ApplicantApplicationServiceImpl implements ApplicantApplicationServ
     private final SpecialtyAdmissionRepository specialtyAdmissionRepository;
     private final VerificationCodeService verificationCodeService;
     private final EmailService emailService;
-    private final CandidateServiceImpl candidateService;
 
     /**
      * If applicant by specified PN already waiting for verify it will throw exception.
@@ -61,7 +60,7 @@ public class ApplicantApplicationServiceImpl implements ApplicantApplicationServ
     }
 
     @Override
-    public void verificationOfApplicantApplication(Long id, String message, boolean verify) {
+    public ApplicantApplication verificationOfApplicantApplication(Long id, String message, boolean verify) {
         if (id == 0) {
             throw new BaseBusinessLogicException("Id заявителя не может равняться 0!");
         }
@@ -84,8 +83,6 @@ public class ApplicantApplicationServiceImpl implements ApplicantApplicationServ
             message = checkingMessage(message, true, applicantApplication.getFirstName());
 
             this.emailService.sendMessage(applicantApplication.getEmail(), "Рассмотрение заявки на поступление", message);
-
-            candidateService.addCandidateFromApplicant(applicantApplication);
         } else {
             applicantApplication.setIsDeclined(true);
             applicantApplication.setIsChecked(true);
@@ -95,6 +92,8 @@ public class ApplicantApplicationServiceImpl implements ApplicantApplicationServ
 
             this.emailService.sendMessage(applicantApplication.getEmail(), "Рассмотрение заявки на поступление", message);
         }
+
+        return applicantApplication;
     }
 
     private String generateText(String code,ApplicantApplication applicantApplication){

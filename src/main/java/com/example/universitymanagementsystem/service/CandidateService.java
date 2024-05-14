@@ -8,5 +8,5 @@ import java.util.List;
 public interface CandidateService {
     List<Candidate> getAllActiveBySpecId(Long specialtyId);
 
-    void addCandidateFromApplicant(ApplicantApplication app);
+    void addCandidate(Candidate candidate);
 }
