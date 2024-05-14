@@ -22,21 +22,24 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
     @Override
     @Transactional
     public Boolean verificateApplicantApplication(VerificationCode verificationCode){
+        if(verificationCode.getCode().length() != 7){
+            throw new BaseBusinessLogicException("Неверный код подтверждения. Должно быть 7 символов. Пример: xxx-xxx");
+        }
          VerificationCode currentVerificationCode = verificationCodeRepository
                  .getByApplicantApplicationId(verificationCode.getApplicantApplicationId())
-                 .orElseThrow(() -> new BaseBusinessLogicException("There is no user with this number"));
+                 .orElseThrow(() -> new BaseBusinessLogicException("Неверный код подтверждения. Повторите еще раз!"));
 
          if (!currentVerificationCode.getCode().equals(verificationCode.getCode())) {
-             throw new BaseBusinessLogicException("Incorrect verification code has been entered");
+             throw new BaseBusinessLogicException("Неверный код подтверждения. Повторите еще раз!");
          }
 
          if (LocalDateTime.now().isAfter(currentVerificationCode.getExpireDate())){
-             throw new BaseBusinessLogicException("The verification code has expired");
+             throw new BaseBusinessLogicException("Код подтверждения истек. Запросите новый");
          }
 
         applicationRepository
                 .findById(verificationCode.getApplicantApplicationId())
-                .orElseThrow(() -> new BaseBusinessLogicException("There is no user with this number"))
+                .orElseThrow(() -> new BaseBusinessLogicException("Ошибка подтверждения почты. Попробуйте еще раз."))
                 .setIsActivated(true);
 
          currentVerificationCode.setIsApplied(true);

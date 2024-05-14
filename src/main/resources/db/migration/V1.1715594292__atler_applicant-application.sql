@@ -1,0 +1,2 @@
+alter table applicant_application
+rename column is_activated to is_email_activated;

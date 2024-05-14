@@ -7,14 +7,13 @@ import com.example.universitymanagementsystem.repository.ApplicantApplicationRep
 import com.example.universitymanagementsystem.repository.CandidateRepository;
 import com.example.universitymanagementsystem.repository.SpecialtyAdmissionRepository;
 import com.example.universitymanagementsystem.service.ApplicantApplicationService;
-import com.example.universitymanagementsystem.service.ApplicantVerificationFacade;
 import com.example.universitymanagementsystem.service.EmailService;
 import com.example.universitymanagementsystem.service.VerificationCodeService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
+import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +42,7 @@ public class ApplicantApplicationServiceImpl implements ApplicantApplicationServ
                 .ifPresent(x -> {
                     throw new BaseBusinessLogicException("Вы уже числитесь кандидатом по направлению " + x.getApplicantApplication().getSpecialty().getName());});
 
-                specialtyAdmissionRepository
+        specialtyAdmissionRepository
                 .getActiveBySpecId(app.getSpecialty().getId())
                 .orElseThrow(() -> new BaseBusinessLogicException("Набор по выбранному направлению не активен"));
         ApplicantApplication applicantApplication = applicantApplicationRepository.save(app);
@@ -55,12 +54,20 @@ public class ApplicantApplicationServiceImpl implements ApplicantApplicationServ
         return applicantApplicationRepository.save(app).getId();
     }
     @Override
-    public Long saveApp(ApplicantApplication applicantApplication){
-        try{
+    public Long saveApp(ApplicantApplication applicantApplication) {
+        try {
             return applicantApplicationRepository.save(applicantApplication).getId();
-        }catch (Exception ex){
-            throw  new BaseBusinessLogicException("Не удалось сохранить заявку абитуриента");
+        } catch (Exception ex) {
+            throw new BaseBusinessLogicException("Не удалось сохранить заявку абитуриента");
         }
+    }
+    @Override
+    public List<ApplicantApplication> getEmailVerifiedApplicants(){
+        List<ApplicantApplication> applicantApplicationsList = applicantApplicationRepository.getAllNonCheckedActivated();
+        if(applicantApplicationsList.isEmpty()){
+            throw new BaseBusinessLogicException("Нету заявок абитуриентов на проверку");
+        }
+        return applicantApplicationsList;
     }
 
     private String generateTextForEmailVer(String code, ApplicantApplication applicantApplication){

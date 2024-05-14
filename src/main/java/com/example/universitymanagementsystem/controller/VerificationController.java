@@ -21,6 +21,5 @@ public class VerificationController {
     public CommonResponseDto<Void> activate(@RequestBody ApplicantVerificationCodeDto verificationCodeDto){
         verificationCodeService.verificateApplicantApplication(applicantApplicationMapper.dtoToEntity(verificationCodeDto));
         return new CommonResponseDto<Void>().setOk();
-
     }
 }

@@ -11,6 +11,7 @@ import org.mapstruct.Mapping;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Specialty extends BaseEntity {
     private String name;
     @ManyToOne
