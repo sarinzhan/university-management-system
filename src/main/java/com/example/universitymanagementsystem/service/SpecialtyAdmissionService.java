@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface SpecialtyAdmissionService {
     List<SpecialtyAdmission> getActiveAdmissions();
+    List<SpecialtyAdmission> getActiveAdmissions(Long facultyId);
 }

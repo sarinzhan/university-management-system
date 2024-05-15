@@ -14,6 +14,11 @@ public interface SpecialtyAdmissionRepository extends JpaRepository<SpecialtyAdm
 
     @Query(value = "select s from specialty_admission s " +
             "where s.startDate < CURRENT_DATE and CURRENT_DATE > s.endDate")
-    List<SpecialtyAdmission> getAllActiveBySpecId();
+    List<SpecialtyAdmission> getAllActive();
+
+    @Query(value = "select s from specialty_admission s " +
+            " where s.startDate < CURRENT_DATE and CURRENT_DATE > s.endDate" +
+            " and s.specialty.id = :specialtyId")
+    Optional<List<SpecialtyAdmission>> getAllActiveBySpecId(Long specialtyId);
 
 }

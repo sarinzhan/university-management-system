@@ -9,7 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
+@Entity(name = "candidate")
 @Data
 @Builder
 @AllArgsConstructor
@@ -29,4 +29,6 @@ public class Candidate extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "specialty_admission_id")
     private SpecialtyAdmission specialtyAdmission;
+
+    private transient Boolean isRecommended;
 }

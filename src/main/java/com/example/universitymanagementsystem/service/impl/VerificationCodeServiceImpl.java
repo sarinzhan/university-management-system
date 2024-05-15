@@ -63,6 +63,5 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
         verCode.setApplicantApplicationId(applicantApplicationId);
         verificationCodeRepository.save(verCode);
         return verCode;
-
     }
 }
