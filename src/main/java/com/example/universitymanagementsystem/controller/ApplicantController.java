@@ -11,6 +11,7 @@ import com.example.universitymanagementsystem.service.ApplicantApplicationServic
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -29,7 +30,7 @@ public class ApplicantController {
 
     @Operation(summary = "Register applicant",description = "Register applicant application without activating.The response is applicant id.")
     @PostMapping("/register-applicant")
-    public CommonResponseDto<Long> registerApplicant(@RequestBody(required = false) RegisterApplicantApplicationDto requestDto) {
+    public CommonResponseDto<Long> registerApplicant(@RequestBody RegisterApplicantApplicationDto requestDto) {
         Long id = applicantApplicationService.registerApplicantApplication(
                 registerApplicantApplicationMapper.dtoToEntity(requestDto));
 
@@ -39,6 +40,7 @@ public class ApplicantController {
     }
 
     @PostMapping(value = "/verify")
+    @PreAuthorize("hasRole('ADMISSION_COMMISSION')")
     public CommonResponseDto<Void> verifyApplicantData(
             @RequestBody ApplicantApplicationVerifyRequestDto applicantApplicationVerifyRequestDto
     ) {
@@ -51,6 +53,7 @@ public class ApplicantController {
     }
     @Operation(description = "Applicant applications to verify if applicant fill data correctly")
     @GetMapping("/get-all-to-verify")
+    @PreAuthorize("hasRole('ADMISSION_COMMISSION')")
     public CommonResponseDto<List<ApplicantApplicationVerifyResponseDto>> getToVerify(){
         return new CommonResponseDto<List<ApplicantApplicationVerifyResponseDto>>()
                 .setOk()

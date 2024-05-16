@@ -4,6 +4,7 @@ import com.example.universitymanagementsystem.entity.BaseEntity;
 import com.example.universitymanagementsystem.entity.uni_struct.Department;
 import jakarta.persistence.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,5 +31,6 @@ public class Candidate extends BaseEntity {
     @JoinColumn(name = "specialty_admission_id")
     private SpecialtyAdmission specialtyAdmission;
 
-    private transient Boolean isRecommended;
+    @Transient
+    private Boolean isRecommended;
 }

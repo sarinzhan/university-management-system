@@ -10,9 +10,12 @@ import java.util.Optional;
 public interface CandidateRepository extends JpaRepository<Candidate,Long> {
 
     @Query("SELECT c FROM candidate c" +
-            " where c.specialtyAdmission.id = :admissionId")
-    Optional<List<Candidate>> findAllByAdmissionId(Long admissionId);
+            " where local_datetime between c.specialtyAdmission.startDate and c.specialtyAdmission.endDate" +
+            " and c.specialtyAdmission.id = :admissionId")
+    List<Candidate> findAllByAdmissionId(Long admissionId);
 
-    @Query("SELECT c FROM candidate where c.specialtyAdmission")
+    @Query("SELECT c FROM candidate c" +
+            " where local_datetime between c.specialtyAdmission.startDate and c.specialtyAdmission.endDate " +
+            "and c.applicantApplication.personalNumber = :personalNumber")
     Optional<Candidate> findActiveByPn(Long personalNumber);
 }

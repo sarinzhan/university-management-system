@@ -20,14 +20,16 @@ public class CandidateServiceImpl implements CandidateService {
     @Override
     public List<Candidate> getActive(Long admissionId) {
         List<Candidate> candidates = candidateRepository.findAllByAdmissionId(admissionId)
-                .orElseThrow(() -> new BaseBusinessLogicException("Кандидатов на данную специальность отсутствуют"))
                 .stream()
                 .sorted(Comparator.comparing(Candidate::getTestScore).reversed())
                 .peek(x -> x.setIsRecommended(false))
                 .toList();
+        if(candidates.isEmpty()){
+            throw new BaseBusinessLogicException("Кандидаты отсутствуют");
+        }
         SpecialtyAdmission specialtyAdmission = candidates.get(0).getSpecialtyAdmission();
-        int totalCapacity = specialtyAdmission.getGroupCapacity() + specialtyAdmission.getGroupAmount();
-        for(int i=0;i<totalCapacity-1;i++){
+        int totalCapacity = specialtyAdmission.getGroupCapacity() * specialtyAdmission.getGroupAmount();
+        for(int i=0;i<totalCapacity && i < candidates.size();i++){
             candidates.get(i).setIsRecommended(true);
         }
         return candidates;

@@ -33,14 +33,14 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
              throw new BaseBusinessLogicException("Неверный код подтверждения. Повторите еще раз!");
          }
 
-         if (LocalDateTime.now().isAfter(currentVerificationCode.getExpireDate())){
+         if (LocalDateTime.now().isBefore(currentVerificationCode.getExpireDate())){
              throw new BaseBusinessLogicException("Код подтверждения истек. Запросите новый");
          }
 
         applicationRepository
                 .findById(verificationCode.getApplicantApplicationId())
                 .orElseThrow(() -> new BaseBusinessLogicException("Ошибка подтверждения почты. Попробуйте еще раз."))
-                .setIsActivated(true);
+                .setIsEmailActivated(true);
 
          currentVerificationCode.setIsApplied(true);
 

@@ -13,8 +13,8 @@ public interface SpecialtyAdmissionResponseMapper {
     @Mappings({
             @Mapping(target = "admissionId",source = "id"),
             @Mapping(target = "specialtyId",source = "specialty.id"),
-            @Mapping(target = "specialtyName",source = "faculty.name"),
-            @Mapping(target = "groupCapacity",expression = "java(specialtyAdmission.getGroupAmount() + specialtyAdmission.getGroupCapacity())")
+            @Mapping(target = "specialtyName",source = "specialty.name"),
+            @Mapping(target = "groupCapacity",expression = "java(specialtyAdmission.getGroupAmount() * specialtyAdmission.getGroupCapacity())")
     })
     SpecialtyAdmissionResponseDto entityToDto(SpecialtyAdmission specialtyAdmission);
 
