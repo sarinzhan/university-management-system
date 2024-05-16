@@ -57,7 +57,7 @@ public class ApplicantVerificationFacadeImpl implements ApplicantVerificationFac
         } else if(Objects.nonNull(message)) {
             return nameOfApplicant + ", здравствуйте! \n" +
                     " \n" +
-                    "Извините, вы не были рекомендованы к зачислению!" +
+                    "Извините, вы не были рекомендованы к зачислению!\n" +
                     "По причинине: " + message;
         }else {
             return nameOfApplicant + ", здравствуйте! \n" +

@@ -33,7 +33,7 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
              throw new BaseBusinessLogicException("Неверный код подтверждения. Повторите еще раз!");
          }
 
-         if (LocalDateTime.now().isBefore(currentVerificationCode.getExpireDate())){
+         if (LocalDateTime.now().isAfter(currentVerificationCode.getExpireDate())){
              throw new BaseBusinessLogicException("Код подтверждения истек. Запросите новый");
          }
 
