@@ -40,16 +40,17 @@ public class ApplicantApplicationServiceImpl implements ApplicantApplicationServ
         }
         candidateRepository.findActiveByPn(app.getPersonalNumber())
                 .ifPresent(x -> {
-                    throw new BaseBusinessLogicException("Вы уже числитесь кандидатом по направлению " + x.getApplicantApplication().getSpecialty().getName());});
+                    throw new BaseBusinessLogicException("Вы уже числитесь кандидатом по направлению \"%s\"".formatted(x.getApplicantApplication().getSpecialty().getName()));});
 
         specialtyAdmissionRepository
                 .getActiveBySpecId(app.getSpecialty().getId())
                 .orElseThrow(() -> new BaseBusinessLogicException("Набор по выбранному направлению не активен"));
+
         ApplicantApplication applicantApplication = applicantApplicationRepository.save(app);
 
         VerificationCode verificationCode = verificationCodeService.generateCode(applicantApplication.getId());
         String subject = "Подтверждение адреса электронной почты и активация кандидатуры";
-        String message = generateTextForEmailVer(verificationCode.getCode(),applicantApplication);
+        String message = generateText(verificationCode.getCode(),applicantApplication);
         emailService.sendMessage(app.getEmail(), subject, message);
         return applicantApplicationRepository.save(app).getId();
     }
@@ -70,7 +71,13 @@ public class ApplicantApplicationServiceImpl implements ApplicantApplicationServ
         return applicantApplicationsList;
     }
 
-    private String generateTextForEmailVer(String code, ApplicantApplication applicantApplication){
+    public String generateText(String code,ApplicantApplication applicantApplication){
+        if(code.isEmpty() ||
+                applicantApplication.getFirstName().isEmpty() ||
+                applicantApplication.getSpecialty().getName().isEmpty()
+        ){
+            throw new BaseBusinessLogicException("Невозможно отправить код подтверждения");
+        }
         return " \n" +
                 applicantApplication.getFirstName() +", здравствуйте! \n" +
                 " \n" +

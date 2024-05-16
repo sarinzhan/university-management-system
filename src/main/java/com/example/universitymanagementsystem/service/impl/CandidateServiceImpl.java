@@ -17,11 +17,7 @@ public class CandidateServiceImpl implements CandidateService {
 
     @Override
     public List<Candidate> getAllActiveBySpecId(Long specialtyId) {
-        List<Candidate> candidateList = candidateRepository.findAll().stream()
-                .filter(x -> x.getSpecialtyAdmission().getStartDate().isAfter(LocalDateTime.now()))
-                .filter(x -> x.getSpecialtyAdmission().getEndDate().isBefore(LocalDateTime.now()))
-                .filter(x -> x.getSpecialtyAdmission().getSpecialty().getId().equals(specialtyId))
-                .toList();
+        List<Candidate> candidateList = candidateRepository.findAllActiveBySpecId(specialtyId);
         if(candidateList.isEmpty()){
             throw new BaseBusinessLogicException("Кандидатов по данному направлению отсутствуют");
         }

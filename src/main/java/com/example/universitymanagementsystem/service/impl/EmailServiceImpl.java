@@ -35,7 +35,7 @@ public class EmailServiceImpl implements EmailService {
 
             Transport.send(message);
         }catch (Exception ex){
-            throw new BaseBusinessLogicException("Возникла ошибка при попытке отправления сообщения по почте, попробуйте чуть позже");
+            throw new BaseBusinessLogicException("Ошибка при отправлении сообщения.");
         }
     }
 }

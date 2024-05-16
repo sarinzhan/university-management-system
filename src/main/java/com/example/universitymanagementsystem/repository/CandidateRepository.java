@@ -12,13 +12,16 @@ public interface CandidateRepository extends JpaRepository<Candidate,Long> {
     Optional<Candidate> findByPn(Long pn);
 
     @Query("select c from Candidate c " +
-            "where c.applicantApplication.personalNumber = :pn " +
-            "and c.specialtyAdmission.startDate < CURRENT_DATE " +
-            "and c.specialtyAdmission.endDate > CURRENT_DATE ")
-    Optional<Candidate> findActiveByPn(Long pn);
+            "where c.applicantApplication.personalNumber = :personalNumber " +
+            "and local_datetime  between c.specialtyAdmission.startDate and c.specialtyAdmission.endDate")
+    Optional<Candidate> findActiveByPn(Long personalNumber);
 
     @Query("select c from Candidate c " +
-            "where c.specialtyAdmission.startDate <CURRENT_DATE " +
-            "and c.specialtyAdmission.endDate > CURRENT_DATE")
+            "where c.specialtyAdmission.id = :specialtyAdmissionId " +
+            "and local_datetime between c.specialtyAdmission.startDate and c.specialtyAdmission.endDate")
+    List<Candidate> findAllActiveBySpecId(Long specialtyAdmissionId);
+
+    @Query("select c from Candidate c " +
+            "where local_datetime  between c.specialtyAdmission.startDate and c.specialtyAdmission.endDate")
     List<Candidate> findAllActive();
 }

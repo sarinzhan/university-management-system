@@ -21,31 +21,8 @@ class PersonServiceImplTest {
     @InjectMocks
     private PersonServiceImpl personService;
 
-
-
-    /*
-    TODO: UNIT TESTS PRACTICE
-
-        @Test
-        void addNewPerson_OK() throws PersonalNumberAlreadyExistException {
-            PersonServiceImpl personService = new PersonServiceImpl();
-            PersonData personData = new PersonData();
-            Long l = personService.addNewPerson(personData);
-            Assertions.assertNotNull(l);
-        }
-
-        @Test
-        void addNewPerson_PnAlreadyExist(){
-            PersonServiceImpl personService = new PersonServiceImpl();
-            PersonData personData = new PersonData();
-            PersonalNumberAlreadyExistException personalNumberAlreadyExistException = assertThrows(
-                    PersonalNumberAlreadyExistException.class, () -> personService.addNewPerson(personData));
-            Assertions.assertEquals(
-                    PersonalNumberAlreadyExistException.class,personalNumberAlreadyExistException.getClass());
-        }
-     */
     @Test
-    void findByPersonalNumber_PersonNotFoundException()  {
+    void findByPersonalNumber_PersonNotFoundException() {
         Mockito.when(personRepository.findByPersonalNumber(1L)).thenReturn(Optional.empty());
         Assertions.assertThrows(BaseBusinessLogicException.class,() -> personService.findByPN(1L));
     }
