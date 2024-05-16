@@ -1,5 +1,6 @@
 package com.example.universitymanagementsystem.entity;
 
+import com.example.universitymanagementsystem.entity.enums.UserRoleEnum;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;

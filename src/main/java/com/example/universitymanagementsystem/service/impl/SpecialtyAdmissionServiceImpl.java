@@ -17,11 +17,20 @@ public class SpecialtyAdmissionServiceImpl implements SpecialtyAdmissionService 
 
     @Override
     public List<SpecialtyAdmission> getActiveAdmissions(){
-        List<SpecialtyAdmission> allActiveBySpecId = specialtyAdmissionRepository.getAllActiveBySpecId();
-        if(allActiveBySpecId.isEmpty()){
+        List<SpecialtyAdmission> allActive = specialtyAdmissionRepository.getAllActive();
+        if(allActive.isEmpty()){
             throw new BaseBusinessLogicException("Наборы не объявлены");
         }else {
-            return allActiveBySpecId;
+            return allActive;
         }
+    }
+
+    @Override
+    public List<SpecialtyAdmission> getActiveAdmissions(Long facultyId) {
+        List<SpecialtyAdmission> allActiveBySpecId = specialtyAdmissionRepository.getAllActive(facultyId);
+        if(allActiveBySpecId.isEmpty()){
+            throw new BaseBusinessLogicException("Набор не объявлены");
+        }
+        return allActiveBySpecId;
     }
 }

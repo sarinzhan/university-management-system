@@ -14,12 +14,4 @@ public class AdviceController {
         responseDto.setMessage(ex.getMessage());
         return responseDto;
     }
-
-    @ExceptionHandler(Exception.class)
-    public CommonResponseDto<Void> handleException(){
-        CommonResponseDto<Void> responseDto = new CommonResponseDto<>();
-        responseDto.setStatus(500);
-        responseDto.setMessage("Internal server error");
-        return responseDto;
-    }
 }

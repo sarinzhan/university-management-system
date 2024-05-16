@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Tag(name = "Applicant application",description = "Applicant application where email verified for commission admission to verify application data")
 @Data
-public class ApplicantApplicationVerifyResponseDto {
+public class ForVerifyApplicantApplicationResponseDto {
 
     private Long applicantApplicationId;
     private LocalDateTime createdDate;

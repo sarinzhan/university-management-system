@@ -23,7 +23,7 @@ public class ApplicantVerificationFacadeImpl implements ApplicantVerificationFac
 
     @Override
     @Transactional
-    public Boolean transferOfApplicantToCandidate(Long applicantApplicationId, String reason, Boolean decision) {
+    public Boolean verifyApplicantApplication(Long applicantApplicationId, String reason, Boolean decision) {
         ApplicantApplication applicantApplication =  applicantApplicationRepository.findById(applicantApplicationId)
                 .orElseThrow(() -> new BaseBusinessLogicException("Не найдена заявка абитуриента"));
 
@@ -31,9 +31,6 @@ public class ApplicantVerificationFacadeImpl implements ApplicantVerificationFac
         applicantApplication.setIsDeclined(!decision);
         applicantApplication.setIsAccepted(decision);
         applicantApplicationService.saveApp(applicantApplication);
-
-        String message = checkingMessage(reason,decision,applicantApplication.getFirstName());
-        emailService.sendMessage(applicantApplication.getEmail(),"Заявка на поступление",message);
 
         Candidate candidate = Candidate
                 .builder()
@@ -43,6 +40,10 @@ public class ApplicantVerificationFacadeImpl implements ApplicantVerificationFac
                 .specialtyAdmission(applicantApplication.getSpecialtyAdmission())
                 .build();
         candidateService.addCandidate(candidate);
+
+        String message = checkingMessage(reason,decision,applicantApplication.getFirstName());
+        emailService.sendMessage(applicantApplication.getEmail(),"Заявка на поступление",message);
+
         return true;
     }
 
@@ -64,8 +65,5 @@ public class ApplicantVerificationFacadeImpl implements ApplicantVerificationFac
                     "Извините, вы не были рекомендованы к зачислению!";
         }
     }
-
-
-
 }
 

@@ -71,7 +71,7 @@ public class ApplicantApplication extends BaseEntity {
     private String lastName;
 
     @Column(name = "is_email_activated")
-    private Boolean isActivated;
+    private Boolean isEmailActivated;
 
     @Column(name = "is_accepted")
     private Boolean isAccepted;

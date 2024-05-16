@@ -42,17 +42,24 @@ public class ApplicantApplicationServiceImpl implements ApplicantApplicationServ
                 .ifPresent(x -> {
                     throw new BaseBusinessLogicException("Вы уже числитесь кандидатом по направлению \"%s\"".formatted(x.getApplicantApplication().getSpecialty().getName()));});
 
-        specialtyAdmissionRepository
+        Integer requiredScore = specialtyAdmissionRepository
                 .getActiveBySpecId(app.getSpecialty().getId())
-                .orElseThrow(() -> new BaseBusinessLogicException("Набор по выбранному направлению не активен"));
+                .orElseThrow(() -> new BaseBusinessLogicException("Набор по выбранному направлению не активен"))
+                .getMinScore();
+
+        if(app.getTestScore() < requiredScore){
+            throw new BaseBusinessLogicException("Для поступления требуется %d и более баллов".formatted(requiredScore));
+        }
 
         ApplicantApplication applicantApplication = applicantApplicationRepository.save(app);
 
         VerificationCode verificationCode = verificationCodeService.generateCode(applicantApplication.getId());
+        Long id = applicantApplicationRepository.save(app).getId();
+
         String subject = "Подтверждение адреса электронной почты и активация кандидатуры";
         String message = generateText(verificationCode.getCode(),applicantApplication);
         emailService.sendMessage(app.getEmail(), subject, message);
-        return applicantApplicationRepository.save(app).getId();
+        return id;
     }
     @Override
     public Long saveApp(ApplicantApplication applicantApplication) {

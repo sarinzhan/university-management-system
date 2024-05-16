@@ -9,12 +9,16 @@ import java.util.Optional;
 
 public interface SpecialtyAdmissionRepository extends JpaRepository<SpecialtyAdmission,Long> {
     @Query(value = "select s from specialty_admission s " +
-            "where s.startDate < local_datetime and local_datetime < s.endDate " +
-            "and s.specialty.id = :specialtyId")
+            "where local_datetime between s.startDate and s.endDate " +
+            " and s.specialty.id = :specialtyId")
     Optional<SpecialtyAdmission> getActiveBySpecId(Long specialtyId);
 
     @Query(value = "select s from specialty_admission s " +
             "where local_datetime between s.startDate and s.endDate")
-    List<SpecialtyAdmission> getAllActiveBySpecId();
+    List<SpecialtyAdmission> getAllActive();
 
+    @Query(value = "select s from specialty_admission s " +
+            " where local_datetime between s.startDate and s.endDate" +
+            " and s.faculty.id = :facultyId")
+    List<SpecialtyAdmission> getAllActive(Long facultyId);
 }
