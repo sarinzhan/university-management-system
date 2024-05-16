@@ -13,6 +13,7 @@ public interface SpecialtyAdmissionResponseMapper {
     @Mappings({
             @Mapping(target = "admissionId",source = "id"),
             @Mapping(target = "specialtyId",source = "specialty.id"),
+            @Mapping(target = "departmentId",source = "department.id"),
             @Mapping(target = "specialtyName",source = "specialty.name"),
             @Mapping(target = "groupCapacity",expression = "java(specialtyAdmission.getGroupAmount() * specialtyAdmission.getGroupCapacity())")
     })

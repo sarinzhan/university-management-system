@@ -14,6 +14,9 @@ public class SpecialtyAdmissionResponseDto {
     @Schema(description = "Specialty id")
     private Long specialtyId;
 
+    @Schema(description = "Department id")
+    private Long departmentId;
+
     @Schema(description = "Specialty name")
     private String specialtyName;
 
