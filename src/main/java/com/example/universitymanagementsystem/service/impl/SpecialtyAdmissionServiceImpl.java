@@ -33,4 +33,10 @@ public class SpecialtyAdmissionServiceImpl implements SpecialtyAdmissionService 
         }
         return allActiveBySpecId;
     }
+
+    @Override
+    public SpecialtyAdmission getById(Long admissionId) {
+        return specialtyAdmissionRepository.findById(admissionId)
+                .orElseThrow(() -> new BaseBusinessLogicException("Набор не найден"));
+    }
 }

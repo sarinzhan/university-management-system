@@ -1,6 +1,6 @@
 package com.example.universitymanagementsystem.service.impl;
 
-import com.example.universitymanagementsystem.entity.PersonData;
+import com.example.universitymanagementsystem.entity.Person;
 import com.example.universitymanagementsystem.exception.BaseBusinessLogicException;
 import com.example.universitymanagementsystem.repository.PersonRepository;
 import org.junit.jupiter.api.Assertions;
@@ -28,20 +28,20 @@ class PersonServiceImplTest {
     }
     @Test
     void findByPn_OK() {
-        PersonData expPerson = new PersonData();
+        Person expPerson = new Person();
         expPerson.setCity("Bishkek");
         expPerson.setEmail("test@gmail.com");
         expPerson.setFirstName("Test");
         expPerson.setPersonalNumber(1L);
 
-        PersonData retPerson = new PersonData();
+        Person retPerson = new Person();
         retPerson.setCity("Bishkek");
         retPerson.setEmail("test@gmail.com");
         retPerson.setFirstName("Test");
         retPerson.setPersonalNumber(1L);
         Mockito.when(personRepository.findByPersonalNumber(1L)).thenReturn(Optional.of(retPerson));
 
-        PersonData res = personService.findByPN(1L);
+        Person res = personService.findByPN(1L);
         Assertions.assertEquals(expPerson,res);
     }
 

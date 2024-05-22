@@ -1,6 +1,7 @@
 package com.example.universitymanagementsystem.entity.uni_struct;
 
 import com.example.universitymanagementsystem.entity.BaseEntity;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -18,6 +19,9 @@ public class Specialty extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "department_id", nullable = false)
     private Department department;
+
+    @Column(name = "group_abbreviation", nullable = false)
+    private String GroupAbbreviation;
 
     public Specialty(Long id,String name) {
         super(id);

@@ -5,10 +5,8 @@ import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 @Entity(name = "users")
 @Data
@@ -20,7 +18,7 @@ public class User extends BaseEntity implements UserDetails{
 
     @ManyToOne
     @JoinColumn(name = "person_data_id")
-    private PersonData personData;
+    private Person person;
 
     @Column(name = "isactive")
     private Boolean isActive;
