@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.rsocket.RSocketProperties;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,18 +43,16 @@ public class SpecialtyAdmissionServiceImpl implements SpecialtyAdmissionService 
     public List<SpecialtyAdmission> getAllAdmissions(){
         List<SpecialtyAdmission> allAdmissions = specialtyAdmissionRepository.getAll()
                 .stream()
-                .sorted()
+                .sorted(Comparator.comparing(SpecialtyAdmission::getStartDate))
+                .peek(admission -> {
+                    LocalDateTime currentDate = LocalDateTime.now();
+                    admission.setIsActive(currentDate.isAfter(admission.getStartDate())
+                            && currentDate.isBefore(admission.getEndDate()));
+                })
                 .toList();
 
         if (allAdmissions.isEmpty()){
             throw new BaseBusinessLogicException("Наборов не объявлялось");
-        }
-
-        for (SpecialtyAdmission admission : allAdmissions){
-            LocalDateTime currentDate = LocalDateTime.now();
-
-            admission.setIsActive(currentDate.isAfter(admission.getStartDate())
-                            && currentDate.isBefore(admission.getEndDate()));
         }
 
         return allAdmissions;
