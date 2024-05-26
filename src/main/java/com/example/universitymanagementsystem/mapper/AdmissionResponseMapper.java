@@ -9,10 +9,9 @@ import org.mapstruct.Mappings;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-public interface AdmissionResponseDtoMapper {
+public interface AdmissionResponseMapper {
     @Mappings({
-            @Mapping(target = "specialtyName", source = "faculty.name"),
-            @Mapping(target = "isActive", constant = "false")
+            @Mapping(target = "specialtyName", source = "faculty.name")
     })
     AdmissionResponseDto entityToDto(SpecialtyAdmission specialtyAdmission);
 

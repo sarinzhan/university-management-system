@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
-@Schema(description = "Get all the admissions for the specialties")
-public class AdmissionResponceDto {
+@Schema(description = "Admission into response dto, for committee")
+public class AdmissionResponseDto {
     private String specialtyName;
     private LocalDateTime startDate;
     private LocalDateTime endDate;

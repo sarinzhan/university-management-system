@@ -12,7 +12,12 @@ public interface ApplicantApplicationRepository extends JpaRepository<ApplicantA
             "where a.isChecked = false" +
             " and a.personalNumber = :personalNumber")
     Optional<ApplicantApplication> findByPnWhichIsNonChecked(Long personalNumber);
+
     @Query("select a from applicant_application a " +
             "where a.isChecked = false and a.isEmailActivated = true")
     List<ApplicantApplication> getAllNonCheckedActivated();
+
+    @Query("select a from applicant_application a " +
+            "where a.specialtyAdmission = :admissionId")
+    List<ApplicantApplication> getAllByAdmissionId(Long admissionId);
 }

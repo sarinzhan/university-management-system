@@ -18,5 +18,5 @@ public class SpecialtyAdmissionResponseDto {
     private String specialtyName;
 
     @Schema(description = "Total number of seat")
-    private Integer groupCapacity;//number of seat
+    private Integer groupCapacity; //number of seat
 }

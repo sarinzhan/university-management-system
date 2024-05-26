@@ -58,6 +58,8 @@ public class ApplicantApplication extends BaseEntity {
 
     private String city;
 
+    private Integer age;
+
     @Column(name = "date_of_birth")
     private LocalDateTime dateOfBirth;
 

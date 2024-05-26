@@ -5,9 +5,12 @@ import com.example.universitymanagementsystem.exception.BaseBusinessLogicExcepti
 import com.example.universitymanagementsystem.repository.SpecialtyAdmissionRepository;
 import com.example.universitymanagementsystem.service.SpecialtyAdmissionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.rsocket.RSocketProperties;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,11 +29,39 @@ public class SpecialtyAdmissionServiceImpl implements SpecialtyAdmissionService 
     }
 
     @Override
-    public List<SpecialtyAdmission> getActiveAdmissions(Long facultyId) {
+    public List<SpecialtyAdmission> getActiveAdmissions(Long facultyId){
         List<SpecialtyAdmission> allActiveBySpecId = specialtyAdmissionRepository.getAllActive(facultyId);
         if(allActiveBySpecId.isEmpty()){
-            throw new BaseBusinessLogicException("Набор не объявлены");
+            throw new BaseBusinessLogicException("Набор не объявлен");
         }
+
         return allActiveBySpecId;
+    }
+
+    @Override
+    public List<SpecialtyAdmission> getAllAdmissions(){
+        List<SpecialtyAdmission> allAdmissions = specialtyAdmissionRepository.getAll()
+                .stream()
+                .sorted()
+                .toList();
+
+        if (allAdmissions.isEmpty()){
+            throw new BaseBusinessLogicException("Наборов не объявлялось");
+        }
+
+        for (SpecialtyAdmission admission : allAdmissions){
+            LocalDateTime currentDate = LocalDateTime.now();
+
+            admission.setIsActive(currentDate.isAfter(admission.getStartDate())
+                            && currentDate.isBefore(admission.getEndDate()));
+        }
+
+        return allAdmissions;
+    }
+
+    @Override
+    public SpecialtyAdmission getAdmissionById(Long admissionId) {
+        return specialtyAdmissionRepository.getByAdmissionId(admissionId)
+                .orElseThrow(() -> new BaseBusinessLogicException("Набора с таким id не объявлялось"));
     }
 }

@@ -10,12 +10,12 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @Schema(description = "Information about admission")
-public class AdmissionDetailResponseDto {
+public class AdmissionDetailsResponseDto {
     private String specialtyName;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private Integer groupAmount;
     private Integer seatNumber;
     private Integer requiredTestScore;
-    private List<ApplicantCandidateResponseDto> applicantCandidate;
+    private List<ApplicantCandidateResponseDto> applicantCandidates;
 }
