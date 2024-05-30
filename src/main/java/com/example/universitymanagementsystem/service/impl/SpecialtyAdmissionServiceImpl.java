@@ -41,7 +41,7 @@ public class SpecialtyAdmissionServiceImpl implements SpecialtyAdmissionService 
 
     @Override
     public List<SpecialtyAdmission> getAllAdmissions(){
-        List<SpecialtyAdmission> allAdmissions = specialtyAdmissionRepository.getAll()
+        List<SpecialtyAdmission> allAdmissions = specialtyAdmissionRepository.findAll()
                 .stream()
                 .sorted(Comparator.comparing(SpecialtyAdmission::getStartDate))
                 .peek(admission -> {

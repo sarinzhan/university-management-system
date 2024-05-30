@@ -93,7 +93,7 @@ public class SpecialtyAdmissionServiceImplTest {
 
     @Test
     public void getAllAdmissions_no_admissions(){
-        when(specialtyAdmissionRepository.getAll()).thenReturn(List.of());
+        when(specialtyAdmissionRepository.findAll()).thenReturn(List.of());
         BaseBusinessLogicException exception =
                 assertThrows(BaseBusinessLogicException.class, () -> specialtyAdmissionService.getAllAdmissions());
 
@@ -103,7 +103,7 @@ public class SpecialtyAdmissionServiceImplTest {
     @Test
     public void getAllAdmissions_success(){
         List<SpecialtyAdmission> expAdmissions = List.of(expSpecialtySubmission);
-        when(specialtyAdmissionRepository.getAll()).thenReturn(expAdmissions);
+        when(specialtyAdmissionRepository.findAll()).thenReturn(expAdmissions);
 
         List<SpecialtyAdmission> retAdmissions = specialtyAdmissionService.getAllAdmissions();
 
