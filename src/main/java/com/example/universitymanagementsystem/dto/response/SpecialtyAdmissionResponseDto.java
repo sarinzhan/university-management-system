@@ -8,14 +8,8 @@ import lombok.Data;
 @Schema(description = "Specialty admission info")
 public class SpecialtyAdmissionResponseDto {
 
-    @Schema(description = "Admission id")
+    @Schema(description = "Specialty admission id")
     private Long admissionId;
-
-    @Schema(description = "Specialty id")
-    private Long specialtyId;
-
-    @Schema(description = "Department id")
-    private Long departmentId;
 
     @Schema(description = "Specialty name")
     private String specialtyName;

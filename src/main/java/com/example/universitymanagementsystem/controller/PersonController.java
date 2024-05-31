@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-@Tag(name = "Person", description = "APIs for person")
+@Tag(name = "Person API", description = "APIs for person")
 @RequestMapping("/person")
 @RestController
 @RequiredArgsConstructor

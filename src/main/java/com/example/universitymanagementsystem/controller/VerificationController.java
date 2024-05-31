@@ -6,6 +6,7 @@ import com.example.universitymanagementsystem.mapper.ApplicantVerificationCodeMa
 import com.example.universitymanagementsystem.mapper.RegisterApplicantApplicationMapper;
 import com.example.universitymanagementsystem.service.VerificationCodeService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,9 @@ public class VerificationController {
     private final ApplicantVerificationCodeMapper applicantApplicationMapper;
 
     @PostMapping("/activate-applicant")
-    public CommonResponseDto<Void> activate(@RequestBody ApplicantVerificationCodeDto verificationCodeDto){
+    public CommonResponseDto<Void> activate(
+            @Valid @RequestBody ApplicantVerificationCodeDto verificationCodeDto
+    ){
         verificationCodeService.verificateApplicantApplication(applicantApplicationMapper.dtoToEntity(verificationCodeDto));
         return new CommonResponseDto<Void>().setOk();
     }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -30,33 +31,30 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity
-                .httpBasic(Customizer.withDefaults())
-                .cors(cors -> cors.disable())
+        httpSecurity.httpBasic(Customizer.withDefaults())
+                .cors((x) -> x.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable);
         httpSecurity
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/applicant/**").permitAll()
-                        .requestMatchers("/swagger-ui/**","/v3/api-docs").permitAll()
-                        .requestMatchers("/applicant/register-applicant").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/admission/get-faculties","/admission/get-specialty/{facultyId}").permitAll()
+                        .requestMatchers("applicant/register").permitAll()
                         .requestMatchers("/person/find-by-pn").permitAll()
+                        .requestMatchers("/verification/activate-applicant").permitAll()
+                        .requestMatchers("/candidate/get-all").permitAll()
+                        .requestMatchers("/auth/login").permitAll()
                         .anyRequest().authenticated());
         httpSecurity.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
         return httpSecurity.build();
     }
-//    @Bean
-//    public WebMvcConfigurer corsConfigurer() {
-//        return new WebMvcConfigurer() {
-//            @Override
-//            public void addCorsMappings(CorsRegistry registry) {
-//                registry.addMapping("/**")
-//                        .allowedOrigins("*")  // Allow any origin
-//                        .allowCredentials(false)  // Do not allow credentials
-//                        .allowedMethods("GET", "POST", "PUT", "DELETE")
-//                        .allowedHeaders("*");
-//            }
-//        };
-//    }
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("*"));
+        configuration.setAllowedMethods(List.of("*"));
+        configuration.setAllowedHeaders(List.of("*"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 }

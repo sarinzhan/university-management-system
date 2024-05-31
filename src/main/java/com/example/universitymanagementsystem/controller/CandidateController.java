@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/candidate")
 @RequiredArgsConstructor
-@Tag(name = "Candidate", description = "APIs for candidates")
+@Tag(name = "Candidates API", description = "APIs for candidates")
 public class CandidateController {
     private final CandidateService candidateService;
     private final AdmissionCandidatesResponseMapper admissionCandidatesResponseMapper;

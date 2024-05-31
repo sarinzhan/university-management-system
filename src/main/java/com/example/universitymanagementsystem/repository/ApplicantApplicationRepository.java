@@ -15,4 +15,10 @@ public interface ApplicantApplicationRepository extends JpaRepository<ApplicantA
     @Query("select a from applicant_application a " +
             "where a.isChecked = false and a.isEmailActivated = true")
     List<ApplicantApplication> getAllNonCheckedActivated();
+
+    @Query("select a from applicant_application a " +
+            "where a.isChecked = false and a.isEmailActivated = true " +
+            "order by a.createdDate asc " +
+            "limit 1")
+    Optional<ApplicantApplication> getFirstToCheck();
 }
