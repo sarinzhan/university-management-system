@@ -58,7 +58,7 @@ public class ApplicantVerificationFacadeImpl implements ApplicantVerificationFac
             return nameOfApplicant + ", здравствуйте! \n" +
                     " \n" +
                     "Извините, вы не были рекомендованы к зачислению!\n" +
-                    "По причинине: " + message;
+                    "Причина: " + message;
         }else {
             return nameOfApplicant + ", здравствуйте! \n" +
                     " \n" +
