@@ -1,10 +1,8 @@
 package com.example.universitymanagementsystem.controller;
 
-import com.example.universitymanagementsystem.dto.response.CommonResponseDto;
-import com.example.universitymanagementsystem.dto.response.FacultyAdmissionResponseDto;
-import com.example.universitymanagementsystem.dto.response.SpecialtyAdmissionResponseDto;
-import com.example.universitymanagementsystem.mapper.FacultyAdmissionResponseMapper;
-import com.example.universitymanagementsystem.mapper.SpecialtyAdmissionResponseMapper;
+import com.example.universitymanagementsystem.dto.response.*;
+import com.example.universitymanagementsystem.mapper.*;
+import com.example.universitymanagementsystem.service.CandidateService;
 import com.example.universitymanagementsystem.service.SpecialtyAdmissionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,10 +22,13 @@ import java.util.Set;
 public class AdmissionController {
 
     private final SpecialtyAdmissionService specialtyAdmissionService;
+    private final CandidateService candidateService;
 
     private final SpecialtyAdmissionResponseMapper specialtyAdmissionResponseMapper;
     private final FacultyAdmissionResponseMapper facultyAdmissionResponseMapper;
-
+    private final AdmissionResponseMapper admissionResponseMapper;
+    private final AdmissionDetailsResponseMapper admissionDetailsResponseMapper;
+    private final ApplicantCandidateResponseMapper applicantCandidateResponseMapper;;
 
     @Operation(summary = "Get faculty admission",description = "Get faculties where specialty admission is available")
     @GetMapping("/get-faculties")
@@ -50,6 +51,35 @@ public class AdmissionController {
                 .setData(
                         specialtyAdmissionResponseMapper.listEntityToDto(
                                 specialtyAdmissionService.getActiveAdmissions(facultyId))
+                );
+    }
+
+    @Operation(summary = "Get all admissions", description = "Get all the admissions for all the time")
+    @GetMapping("/get-admission-list")
+    public CommonResponseDto<List<AdmissionResponseDto>> getAllAdmissions(){
+        return  new CommonResponseDto<List<AdmissionResponseDto>>()
+                .setOk()
+                .setData(
+                        admissionResponseMapper.listEntityToDto(
+                                specialtyAdmissionService.getAllAdmissions())
+                );
+    }
+
+    @Operation(summary = "Get information about admission", description = "Get information about recruitment by id")
+    @GetMapping("/get-admission-details/{admissionId}")
+    public CommonResponseDto<AdmissionDetailsResponseDto> getAdmissionDetails(
+            @PathVariable Long admissionId
+    ){
+        List<ApplicantCandidateResponseDto> applicantCandidates = applicantCandidateResponseMapper.listEntitiesToDto(
+                candidateService.getAllActiveByAdmissionId(admissionId));
+
+        AdmissionDetailsResponseDto admissionDetails = admissionDetailsResponseMapper.entitiesToDto(
+                specialtyAdmissionService.getAdmissionById(admissionId), applicantCandidates);
+
+        return new CommonResponseDto<AdmissionDetailsResponseDto>()
+                .setOk()
+                .setData(
+                        admissionDetails
                 );
     }
 }

@@ -4,11 +4,9 @@ import com.example.universitymanagementsystem.entity.BaseEntity;
 import com.example.universitymanagementsystem.entity.uni_struct.Department;
 import com.example.universitymanagementsystem.entity.uni_struct.Faculty;
 import com.example.universitymanagementsystem.entity.uni_struct.Specialty;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.transaction.TransactionScoped;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -44,4 +42,6 @@ public class SpecialtyAdmission extends BaseEntity {
     @JoinColumn(name = "department_id",nullable = false)
     private Department department;
 
+    @Transient
+    private Boolean isActive;
 }
