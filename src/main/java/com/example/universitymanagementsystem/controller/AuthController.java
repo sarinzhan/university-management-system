@@ -6,24 +6,24 @@ import com.example.universitymanagementsystem.dto.response.TokenResponseDto;
 import com.example.universitymanagementsystem.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
-@Tag(name = "Authentication")
+@Tag(name = "Authorization API")
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     @Operation(summary = "Авторизация пользователя")
-    public CommonResponseDto<TokenResponseDto> loginUser(@RequestBody LoginRequestDto loginRequestDto){
+    public CommonResponseDto<TokenResponseDto> loginUser(
+            @Valid @RequestBody LoginRequestDto loginRequestDto
+    ){
         CommonResponseDto<TokenResponseDto> responseDto = new CommonResponseDto<>();
 
         TokenResponseDto tokenResponseDto = authService.authenticateUser(loginRequestDto);

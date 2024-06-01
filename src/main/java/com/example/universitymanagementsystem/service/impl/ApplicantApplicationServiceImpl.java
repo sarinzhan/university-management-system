@@ -1,6 +1,7 @@
 package com.example.universitymanagementsystem.service.impl;
 
 import com.example.universitymanagementsystem.entity.applyment.ApplicantApplication;
+import com.example.universitymanagementsystem.entity.applyment.SpecialtyAdmission;
 import com.example.universitymanagementsystem.entity.applyment.VerificationCode;
 import com.example.universitymanagementsystem.exception.*;
 import com.example.universitymanagementsystem.repository.ApplicantApplicationRepository;
@@ -9,6 +10,7 @@ import com.example.universitymanagementsystem.repository.SpecialtyAdmissionRepos
 import com.example.universitymanagementsystem.service.ApplicantApplicationService;
 import com.example.universitymanagementsystem.service.EmailService;
 import com.example.universitymanagementsystem.service.VerificationCodeService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +35,7 @@ public class ApplicantApplicationServiceImpl implements ApplicantApplicationServ
      * @return Long - created applicant application id
      */
     @Override
+    @Transactional
     public Long registerApplicantApplication(ApplicantApplication app){
         if(applicantApplicationRepository.findByPnWhichIsNonChecked(app.getPersonalNumber())
                 .isPresent()){
@@ -42,11 +45,14 @@ public class ApplicantApplicationServiceImpl implements ApplicantApplicationServ
                 .ifPresent(x -> {
                     throw new BaseBusinessLogicException("Вы уже числитесь кандидатом по направлению \"%s\"".formatted(x.getApplicantApplication().getSpecialty().getName()));});
 
-        Integer requiredScore = specialtyAdmissionRepository
-                .getActiveBySpecId(app.getSpecialty().getId())
-                .orElseThrow(() -> new BaseBusinessLogicException("Набор по выбранному направлению не активен"))
-                .getMinScore();
+        SpecialtyAdmission specialtyAdmission = specialtyAdmissionRepository
+                .getActiveById(app.getSpecialtyAdmission().getId())
+                .orElseThrow(() -> new BaseBusinessLogicException("Набор по выбранному направлению не активен"));
+        app.setSpecialty(specialtyAdmission.getSpecialty());
+        app.setDepartment(specialtyAdmission.getDepartment());
+        app.setFaculty(specialtyAdmission.getFaculty());
 
+        Integer requiredScore = specialtyAdmission.getMinScore();
         if(app.getTestScore() < requiredScore){
             throw new BaseBusinessLogicException("Для поступления требуется %d и более баллов".formatted(requiredScore));
         }
@@ -70,7 +76,7 @@ public class ApplicantApplicationServiceImpl implements ApplicantApplicationServ
         }
     }
     @Override
-    public List<ApplicantApplication> getEmailVerifiedApplicants(){
+    public List<ApplicantApplication> getEmailVerifiedNotChecked(){
         List<ApplicantApplication> applicantApplicationsList = applicantApplicationRepository.getAllNonCheckedActivated();
         if(applicantApplicationsList.isEmpty()){
             throw new BaseBusinessLogicException("Нету заявок абитуриентов на проверку");
@@ -78,7 +84,21 @@ public class ApplicantApplicationServiceImpl implements ApplicantApplicationServ
         return applicantApplicationsList;
     }
 
-    public String generateText(String code,ApplicantApplication applicantApplication){
+    @Override
+    public ApplicantApplication getById(Long id) {
+        return applicantApplicationRepository
+                .findById(id)
+                .orElseThrow(() -> new BaseBusinessLogicException("Не удалось найти заявку абитуриента"));
+    }
+
+    @Override
+    public ApplicantApplication getFirstToCheck() {
+        return applicantApplicationRepository
+                .getFirstToCheck()
+                .orElseThrow(() -> new BaseBusinessLogicException("Заявки абитуриентов отсутствуют"));
+    }
+
+    public String generateText(String code, ApplicantApplication applicantApplication){
         if(code.isEmpty() ||
                 applicantApplication.getFirstName().isEmpty() ||
                 applicantApplication.getSpecialty().getName().isEmpty()

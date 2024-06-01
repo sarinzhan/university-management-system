@@ -8,4 +8,7 @@ import lombok.Data;
 public class TokenResponseDto {
     @Schema(description = "Токен доступа", example = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTYyMjUwNj...")
     private String token;
+
+    @Schema(description = "User role")
+    private String role;
 }

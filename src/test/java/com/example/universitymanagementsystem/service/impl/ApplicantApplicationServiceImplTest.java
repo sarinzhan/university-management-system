@@ -56,7 +56,7 @@ class ApplicantApplicationServiceImplTest {
         ApplicantApplication applicantApplication = new ApplicantApplication();
         applicantApplication.setEmail("test@gmail.com");
         when (applicantApplicationRepository.getAllNonCheckedActivated()).thenReturn(List.of(applicantApplication));
-        List<ApplicantApplication> emailVerifiedApplicants = applicantApplicationService.getEmailVerifiedApplicants();
+        List<ApplicantApplication> emailVerifiedApplicants = applicantApplicationService.getEmailVerifiedNotChecked();
         Assertions.assertEquals(emailVerifiedApplicants.size(),1);
         Assertions.assertEquals(emailVerifiedApplicants.get(0),applicantApplication);
     }
@@ -64,7 +64,7 @@ class ApplicantApplicationServiceImplTest {
     @Test
     void getEmailVerifiedApplicants_nothing() {
         when(applicantApplicationRepository.getAllNonCheckedActivated()).thenReturn(List.of());
-        BaseBusinessLogicException exception = assertThrows(BaseBusinessLogicException.class, () -> applicantApplicationService.getEmailVerifiedApplicants());
+        BaseBusinessLogicException exception = assertThrows(BaseBusinessLogicException.class, () -> applicantApplicationService.getEmailVerifiedNotChecked());
         Assertions.assertEquals(exception.getMessage(), "Нету заявок абитуриентов на проверку");
     }
 
