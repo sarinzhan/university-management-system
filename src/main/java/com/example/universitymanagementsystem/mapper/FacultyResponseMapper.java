@@ -14,6 +14,7 @@ public interface FacultyResponseMapper {
             @Mapping(target = "facultyId", source = "id"),
             @Mapping(target = "facultyName", source = "name")
     })
+    FacultyResponseDto entityToDto(Faculty faculty);
 
     List<FacultyResponseDto> listEntitiesToDto(List<Faculty> faculties);
 }

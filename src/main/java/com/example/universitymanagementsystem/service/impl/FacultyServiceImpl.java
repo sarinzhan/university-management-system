@@ -16,7 +16,7 @@ public class FacultyServiceImpl implements FacultyService {
     private final FacultyRepository facultyRepository;
 
     @Override
-    public List<Faculty> getAllFaculties(){
+    public List<Faculty> getAllFaculties() {
         List<Faculty> faculties = facultyRepository.findAll()
                 .stream()
                 .sorted(Comparator.comparing(Faculty::getName))
@@ -26,5 +26,10 @@ public class FacultyServiceImpl implements FacultyService {
             throw new BaseBusinessLogicException("Факультеты не найдены");
 
         return faculties;
+    }
+    @Override
+    public Faculty getById(Long id) {
+        return facultyRepository.findById(id)
+                .orElseThrow(() -> new BaseBusinessLogicException("Не удалось найти факультет"));
     }
 }

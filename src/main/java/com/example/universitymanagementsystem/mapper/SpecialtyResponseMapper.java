@@ -10,11 +10,14 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface SpecialtyResponseMapper {
+
+    List<SpecialtyResponseDto> listEntitiesToDto(List<Specialty> specialties);
+
     @Mappings({
             @Mapping(target = "specialtyId", source = "id"),
             @Mapping(target = "specialtyName", source = "name"),
+            @Mapping(target = "departmentId", source = "department.id"),
             @Mapping(target = "departmentName", source = "department.name")
     })
-
-    List<SpecialtyResponseDto> listEntitiesToDto(List<Specialty> specialties);
+    SpecialtyResponseDto entityToDto(Specialty specialty);
 }

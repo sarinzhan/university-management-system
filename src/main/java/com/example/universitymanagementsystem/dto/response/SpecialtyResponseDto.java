@@ -10,6 +10,7 @@ import lombok.Data;
 public class SpecialtyResponseDto {
     private Long specialtyId;
     private String specialtyName;
+    private Long departmentId;
     private String departmentName;
     private String degree;
     private String educationForm;

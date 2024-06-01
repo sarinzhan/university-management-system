@@ -26,7 +26,7 @@ public class SpecialtyController {
                 .setOk()
                 .setData(
                         specialtyResponseMapper.listEntitiesToDto(
-                                specialtyService.getAllSpecialties())
+                                specialtyService.getAll())
                 );
     }
 }

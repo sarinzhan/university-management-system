@@ -3,7 +3,6 @@ package com.example.universitymanagementsystem.service.impl;
 import com.example.universitymanagementsystem.entity.uni_struct.Specialty;
 import com.example.universitymanagementsystem.exception.BaseBusinessLogicException;
 import com.example.universitymanagementsystem.repository.SpecialtyRepository;
-import com.example.universitymanagementsystem.service.SpecialtyService;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,7 +37,7 @@ public class SpecialtyServiceImplTest {
     void getAllSpecialties_no_specialties(){
         when(specialtyRepository.findAll()).thenReturn(List.of());
         BaseBusinessLogicException exception =
-                assertThrows(BaseBusinessLogicException.class, () -> specialtyService.getAllSpecialties());
+                assertThrows(BaseBusinessLogicException.class, () -> specialtyService.getAll());
 
         assertEquals("Специальности не найдены", exception.getMessage());
     }
@@ -48,7 +47,7 @@ public class SpecialtyServiceImplTest {
         List<Specialty> expSpecialties = List.of(expSpecialty);
         when(specialtyRepository.findAll()).thenReturn(expSpecialties);
 
-        List<Specialty> retSpecialties = specialtyService.getAllSpecialties();
+        List<Specialty> retSpecialties = specialtyService.getAll();
 
         assertNotNull(retSpecialties);
         assertEquals(1, retSpecialties.size());

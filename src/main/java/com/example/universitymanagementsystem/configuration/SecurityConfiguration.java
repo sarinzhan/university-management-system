@@ -43,6 +43,8 @@ public class SecurityConfiguration {
                         .requestMatchers("/verification/activate-applicant").permitAll()
                         .requestMatchers("/candidate/get-all").permitAll()
                         .requestMatchers("/auth/login").permitAll()
+                        .requestMatchers("/specialty/get-all").permitAll()
+                        .requestMatchers("/faculty/get-all").permitAll()
                         .anyRequest().authenticated());
         httpSecurity.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();

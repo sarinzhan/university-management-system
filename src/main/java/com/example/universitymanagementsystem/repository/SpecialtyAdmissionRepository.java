@@ -4,6 +4,7 @@ import com.example.universitymanagementsystem.entity.applyment.SpecialtyAdmissio
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,4 +31,10 @@ public interface SpecialtyAdmissionRepository extends JpaRepository<SpecialtyAdm
     @Query(value = "select s from specialty_admission s " +
             " where s.id = :admissionId")
     Optional<SpecialtyAdmission> getByAdmissionId(Long admissionId);
+
+    @Query(value ="select count(s) > 0 from specialty_admission s " +
+            "where :startDate between s.startDate and s.endDate " +
+            "or :endDate between s.startDate and s.endDate " +
+            "and :specialtyId = s.specialty.id")
+    Boolean isCollision(LocalDateTime startDate, LocalDateTime endDate,Long specialtyId);
 }
