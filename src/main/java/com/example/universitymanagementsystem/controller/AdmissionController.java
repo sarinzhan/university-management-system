@@ -66,6 +66,7 @@ public class AdmissionController {
 
     @Operation(summary = "Get all admissions", description = "Get all the admissions for all the time")
     @GetMapping("/get-admission-list")
+    @PreAuthorize("hasAnyRole('ADMISSION_COMMISSION')")
     public CommonResponseDto<List<AdmissionResponseDto>> getAllAdmissions(){
         return new CommonResponseDto<List<AdmissionResponseDto>>()
                 .setOk()
@@ -77,6 +78,7 @@ public class AdmissionController {
 
     @Operation(summary = "Get information about admission", description = "Get information about recruitment by id")
     @GetMapping("/get-admission-details/{admissionId}")
+    @PreAuthorize("hasAnyRole('ADMISSION_COMMISSION')")
     public CommonResponseDto<AdmissionDetailsResponseDto> getAdmissionDetails(
             @PathVariable Long admissionId
     ) {
