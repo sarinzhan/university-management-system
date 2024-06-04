@@ -9,8 +9,10 @@ import com.example.universitymanagementsystem.dto.response.FacultyAdmissionRespo
 import com.example.universitymanagementsystem.dto.response.SpecialtyAdmissionResponseDto;
 import com.example.universitymanagementsystem.entity.applyment.SpecialtyAdmission;
 import com.example.universitymanagementsystem.mapper.CreateAdmissionRequestMapper;
+import com.example.universitymanagementsystem.dto.response.CandidateDistributionResponseDto;
 import com.example.universitymanagementsystem.mapper.FacultyAdmissionResponseMapper;
 import com.example.universitymanagementsystem.mapper.SpecialtyAdmissionResponseMapper;
+import com.example.universitymanagementsystem.service.CandidateDistributionService;
 import com.example.universitymanagementsystem.service.SpecialtyAdmissionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -18,6 +20,11 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import jakarta.annotation.security.PermitAll;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashSet;
 import java.util.List;
@@ -30,6 +37,7 @@ import java.util.Set;
 public class AdmissionController {
 
     private final SpecialtyAdmissionService specialtyAdmissionService;
+    private final CandidateDistributionService candidateDistributionService;
     private final CandidateService candidateService;
 
     private final SpecialtyAdmissionResponseMapper specialtyAdmissionResponseMapper;
@@ -52,7 +60,7 @@ public class AdmissionController {
     }
 
     @Operation(summary = "Get specialty admission",description = "Get specialties by faculty id where admission is available")
-    @GetMapping("/get-specialty/{facultyId}")
+    @GetMapping("/get/{facultyId}")
     public CommonResponseDto<List<SpecialtyAdmissionResponseDto>> getSpecialtyAdmission(
             @PathVariable Long facultyId
     ){
@@ -64,8 +72,9 @@ public class AdmissionController {
                 );
     }
 
+
     @Operation(summary = "Get all admissions", description = "Get all the admissions for all the time")
-    @GetMapping("/get-admission-list")
+    @GetMapping("/get-all")
     @PreAuthorize("hasAnyRole('ADMISSION_COMMISSION')")
     public CommonResponseDto<List<AdmissionResponseDto>> getAllAdmissions(){
         return new CommonResponseDto<List<AdmissionResponseDto>>()
@@ -77,7 +86,7 @@ public class AdmissionController {
     }
 
     @Operation(summary = "Get information about admission", description = "Get information about recruitment by id")
-    @GetMapping("/get-admission-details/{admissionId}")
+    @GetMapping("/get-details/{admissionId}")
     @PreAuthorize("hasAnyRole('ADMISSION_COMMISSION')")
     public CommonResponseDto<AdmissionDetailsResponseDto> getAdmissionDetails(
             @PathVariable Long admissionId
@@ -106,4 +115,19 @@ public class AdmissionController {
                 .setOk()
                 .setData(admissionId);
     }
+
+    @Operation(summary = "Distribute candidates", description = "Create groups. Create students. Create for students accounts and send message to the email")
+    @GetMapping("/distribute/{admissionId}")
+    @PreAuthorize("hasAnyRole('ADMISSION_COMMISSION')")
+    public CommonResponseDto<List<CandidateDistributionResponseDto>> distribution(
+            @PathVariable Long admissionId
+    ){
+        List<CandidateDistributionResponseDto> candidateDistributionResponseDtoList = candidateDistributionService.distributeCandidates(admissionId);
+        return new CommonResponseDto<List<CandidateDistributionResponseDto>>()
+                .setOk()
+                .setData(candidateDistributionResponseDtoList);
+    }
+
+
+
 }

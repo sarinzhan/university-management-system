@@ -3,7 +3,6 @@ package com.example.universitymanagementsystem.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity(name = "employee")
@@ -15,7 +14,7 @@ public class Employee extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "person_data_id")
-    private PersonData personData;
+    private Person person;
 
     @Column(name = "retire_date")
     private LocalDateTime retireDate;

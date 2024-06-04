@@ -3,7 +3,6 @@ package com.example.universitymanagementsystem.controller;
 import com.example.universitymanagementsystem.dto.request.ApplicantVerificationCodeDto;
 import com.example.universitymanagementsystem.dto.response.CommonResponseDto;
 import com.example.universitymanagementsystem.mapper.ApplicantVerificationCodeMapper;
-import com.example.universitymanagementsystem.mapper.RegisterApplicantApplicationMapper;
 import com.example.universitymanagementsystem.service.VerificationCodeService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;

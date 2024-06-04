@@ -7,10 +7,13 @@ import java.util.List;
 public interface ApplicantApplicationService {
     Long registerApplicantApplication(ApplicantApplication app);
     Long saveApp(ApplicantApplication applicantApplication);
+
     List<ApplicantApplication> getEmailVerifiedNotChecked();
 
     ApplicantApplication getById(Long id);
 
     ApplicantApplication getFirstToCheck();
+
+    List<ApplicantApplication> getByAdmissionId(Long admissionId);
 
 }
