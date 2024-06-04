@@ -24,13 +24,9 @@ public class CandidateServiceImpl implements CandidateService {
                 .peek(x -> x.setIsRecommended(false))
                 .toList();
         if(candidates.isEmpty()){
-            throw new BaseBusinessLogicException("Кандидаты отсутствуют");
+            throw new BaseBusinessLogicException("Не удалось найти кандидатов по набору");
         }
-        SpecialtyAdmission specialtyAdmission = candidates.get(0).getSpecialtyAdmission();
-        int totalCapacity = specialtyAdmission.getGroupCapacity() * specialtyAdmission.getGroupAmount();
-        for(int i=0;i<totalCapacity && i < candidates.size();i++){
-            candidates.get(i).setIsRecommended(true);
-        }
+        setIsRecom(candidates);
         return candidates;
     }
 
@@ -49,7 +45,16 @@ public class CandidateServiceImpl implements CandidateService {
         if(allByAdmissionId.isEmpty()){
             throw new BaseBusinessLogicException("Не удалось найти кандидатов по набору");
         }
+        setIsRecom(allByAdmissionId);
         return allByAdmissionId;
+    }
+
+    private void setIsRecom(List<Candidate> source){
+        SpecialtyAdmission specialtyAdmission = source.get(0).getSpecialtyAdmission();
+        int totalCapacity = specialtyAdmission.getGroupCapacity() * specialtyAdmission.getGroupAmount();
+        for(int i=0;i<totalCapacity && i < source.size();i++){
+            source.get(i).setIsRecommended(true);
+        }
     }
 }
 

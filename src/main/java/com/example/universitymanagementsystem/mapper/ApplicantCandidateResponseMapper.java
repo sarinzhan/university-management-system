@@ -15,7 +15,6 @@ public interface ApplicantCandidateResponseMapper {
             @Mapping(target = "firstName", source = "applicantApplication.firstName"),
             @Mapping(target ="secondName", source = "applicantApplication.middleName"),
             @Mapping(target = "lastName", source = "applicantApplication.lastName"),
-            @Mapping(target = "age", source = "applicantApplication.age"),
             @Mapping(target = "testScope", source = "applicantApplication.testScore"),
             @Mapping(target = "isEmailActivated", source = "applicantApplication.isEmailActivated"),
             @Mapping(target = "isChecked", source = "applicantApplication.isChecked")

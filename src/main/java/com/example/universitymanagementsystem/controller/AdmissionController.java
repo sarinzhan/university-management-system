@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @RestController
@@ -44,7 +45,8 @@ public class AdmissionController {
     private final FacultyAdmissionResponseMapper facultyAdmissionResponseMapper;
     private final AdmissionResponseMapper admissionResponseMapper;
     private final AdmissionDetailsResponseMapper admissionDetailsResponseMapper;
-    private final ApplicantCandidateResponseMapper applicantCandidateResponseMapper;;
+    private final ApplicantCandidateResponseMapper applicantCandidateResponseMapper;
+    private final AdmissionCandidatesResponseMapper admissionCandidatesResponseMapper;
     private final CreateAdmissionRequestMapper createAdmissionRequestMapper;
 
 
@@ -91,11 +93,13 @@ public class AdmissionController {
     public CommonResponseDto<AdmissionDetailsResponseDto> getAdmissionDetails(
             @PathVariable Long admissionId
     ) {
-        List<ApplicantCandidateResponseDto> applicantCandidates = applicantCandidateResponseMapper.listEntitiesToDto(
-                candidateService.getAllActiveByAdmissionId(admissionId));
+        AdmissionDetailsResponseDto admissionDetails =
+                admissionDetailsResponseMapper.entityToDto(specialtyAdmissionService.getById(admissionId));
 
-        AdmissionDetailsResponseDto admissionDetails = admissionDetailsResponseMapper.entitiesToDto(
-                specialtyAdmissionService.getAdmissionById(admissionId), applicantCandidates);
+        List<AdmissionCandidatesResponseDto> admissionCandidatesResponseDtoList =
+                admissionCandidatesResponseMapper.listEntityToDto(candidateService.getAllByAdmissionId(admissionId));
+
+        admissionDetails.setApplicantCandidates(admissionCandidatesResponseDtoList);
 
         return new CommonResponseDto<AdmissionDetailsResponseDto>()
                 .setOk()
