@@ -11,7 +11,8 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface AdmissionResponseMapper {
     @Mappings({
-            @Mapping(target = "specialtyName", source = "faculty.name")
+            @Mapping(target = "specialtyName", source = "specialty.name"),
+            @Mapping(target = "facultyName", source = "faculty.name")
     })
     AdmissionResponseDto entityToDto(SpecialtyAdmission specialtyAdmission);
 

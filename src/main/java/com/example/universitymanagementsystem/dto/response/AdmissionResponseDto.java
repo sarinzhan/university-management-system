@@ -11,7 +11,11 @@ import java.time.LocalDateTime;
 @Schema(description = "Admission into response dto, for committee")
 public class AdmissionResponseDto {
     private String specialtyName;
+    private String facultyName;
+    private LocalDateTime createdDate;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    private Boolean isActive;
+    private Integer groupAmount;
+    private Integer groupCapacity;
+    private Integer minScore;
 }
