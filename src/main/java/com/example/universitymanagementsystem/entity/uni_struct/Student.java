@@ -1,5 +1,8 @@
-package com.example.universitymanagementsystem.entity;
+package com.example.universitymanagementsystem.entity.uni_struct;
 
+import com.example.universitymanagementsystem.entity.BaseEntity;
+import com.example.universitymanagementsystem.entity.Person;
+import com.example.universitymanagementsystem.entity.User;
 import com.example.universitymanagementsystem.entity.applyment.ApplicantApplication;
 import com.example.universitymanagementsystem.entity.uni_struct.Group;
 import jakarta.persistence.*;
@@ -15,7 +18,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Student extends BaseEntity{
+public class Student extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "personal_data_id")
     private Person person;
@@ -40,8 +43,10 @@ public class Student extends BaseEntity{
 
     @Column(name = "is_studying")
     private Boolean isStudying;
+
     @Column(name = "is_expelled")
     private Boolean isExpelled;
+
     @Column(name = "test_score")
     private  Integer testScore;
 

@@ -1,6 +1,6 @@
 package com.example.universitymanagementsystem.service.impl;
 
-import com.example.universitymanagementsystem.entity.Student;
+import com.example.universitymanagementsystem.entity.uni_struct.Student;
 import com.example.universitymanagementsystem.exception.BaseBusinessLogicException;
 import com.example.universitymanagementsystem.repository.StudentRepository;
 import com.example.universitymanagementsystem.service.StudentService;

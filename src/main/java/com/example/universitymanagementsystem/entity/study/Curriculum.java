@@ -1,6 +1,7 @@
-package com.example.universitymanagementsystem.entity.uni_struct;
+package com.example.universitymanagementsystem.entity.study;
 
 import com.example.universitymanagementsystem.entity.BaseEntity;
+import com.example.universitymanagementsystem.entity.uni_struct.Specialty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -22,12 +23,12 @@ public class Curriculum extends BaseEntity {
     private Integer semesterNumber;
 
     @ManyToOne
-    @JoinColumn(name = "specialty", nullable = false)
+    @JoinColumn(name = "specialty_id", nullable = false)
     private Specialty specialty;
 
     @Column(name = "created_date")
     private LocalDate createdDate;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "identifier_name")
+    private String identifierName;
 }

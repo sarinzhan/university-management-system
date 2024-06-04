@@ -1,7 +1,7 @@
 package com.example.universitymanagementsystem.mapper;
 
 import com.example.universitymanagementsystem.dto.response.CandidateDistributionResponseDto;
-import com.example.universitymanagementsystem.entity.Student;
+import com.example.universitymanagementsystem.entity.uni_struct.Student;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;

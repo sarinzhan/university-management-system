@@ -1,7 +1,9 @@
-package com.example.universitymanagementsystem.entity;
+package com.example.universitymanagementsystem.entity.uni_struct;
 
+import com.example.universitymanagementsystem.entity.BaseEntity;
+import com.example.universitymanagementsystem.entity.Employee;
 import com.example.universitymanagementsystem.entity.uni_struct.Department;
-import com.example.universitymanagementsystem.entity.uni_struct.Discipline;
+import com.example.universitymanagementsystem.entity.study.Discipline;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

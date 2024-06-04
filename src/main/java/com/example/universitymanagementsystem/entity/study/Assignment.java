@@ -1,7 +1,7 @@
-package com.example.universitymanagementsystem.entity.uni_struct;
+package com.example.universitymanagementsystem.entity.study;
 
 import com.example.universitymanagementsystem.entity.BaseEntity;
-import com.example.universitymanagementsystem.entity.Student;
+import com.example.universitymanagementsystem.entity.study.Course;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -13,25 +13,27 @@ import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
-@Entity(name = "report")
+@Entity(name = "assignment")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-public class Report extends BaseEntity {
+public class Assignment extends BaseEntity {
     @ManyToOne
-    @JoinColumn(name = "assignment_id", nullable = false)
-    private Assignment assignment;
+    @JoinColumn(name = "course_id", nullable = false)
+    private Course course;
 
-    @Column(name = "link")
-    private String link;
+    @Column(name = "description")
+    private String description;
 
-    @Column(name = "scope")
-    private String scope;
+    @Column(name = "subject")
+    private String subject;
 
-    @ManyToOne
-    @JoinColumn(name = "student_id")
-    private Student student;
+    @Column(name = "max_scope")
+    private int maxScope;
+
+    @Column(name = "deadline")
+    private LocalDateTime deadline;
 
     @Column(name = "assignment_date")
     private LocalDateTime assignmentDate;

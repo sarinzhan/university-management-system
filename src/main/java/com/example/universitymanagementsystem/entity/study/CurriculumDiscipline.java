@@ -1,4 +1,4 @@
-package com.example.universitymanagementsystem.entity.uni_struct;
+package com.example.universitymanagementsystem.entity.study;
 
 import com.example.universitymanagementsystem.entity.BaseEntity;
 import jakarta.persistence.Column;

@@ -1,6 +1,7 @@
-package com.example.universitymanagementsystem.entity.uni_struct;
+package com.example.universitymanagementsystem.entity.study;
 
 import com.example.universitymanagementsystem.entity.BaseEntity;
+import com.example.universitymanagementsystem.entity.uni_struct.Group;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;

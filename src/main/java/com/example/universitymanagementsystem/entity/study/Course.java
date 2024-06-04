@@ -1,7 +1,8 @@
-package com.example.universitymanagementsystem.entity.uni_struct;
+package com.example.universitymanagementsystem.entity.study;
 
 import com.example.universitymanagementsystem.entity.BaseEntity;
-import com.example.universitymanagementsystem.entity.Teacher;
+import com.example.universitymanagementsystem.entity.uni_struct.Teacher;
+import com.example.universitymanagementsystem.entity.uni_struct.Group;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -25,7 +26,7 @@ public class Course extends BaseEntity {
     private Semester semester;
 
     @ManyToOne
-    @JoinColumn(name = "groupId", nullable = false)
+    @JoinColumn(name = "group_id", nullable = false)
     private Group group;
 
     @ManyToOne

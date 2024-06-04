@@ -2,14 +2,13 @@ package com.example.universitymanagementsystem.service.impl;
 
 import com.example.universitymanagementsystem.dto.response.CandidateDistributionResponseDto;
 import com.example.universitymanagementsystem.entity.Person;
-import com.example.universitymanagementsystem.entity.Student;
+import com.example.universitymanagementsystem.entity.uni_struct.Student;
 import com.example.universitymanagementsystem.entity.User;
 import com.example.universitymanagementsystem.entity.applyment.Candidate;
 import com.example.universitymanagementsystem.entity.applyment.SpecialtyAdmission;
 import com.example.universitymanagementsystem.entity.uni_struct.Group;
 import com.example.universitymanagementsystem.exception.BaseBusinessLogicException;
 import com.example.universitymanagementsystem.mapper.CandidateDistributionResponseMapper;
-import com.example.universitymanagementsystem.mapper.EntityToEntityMapper;
 import com.example.universitymanagementsystem.service.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
