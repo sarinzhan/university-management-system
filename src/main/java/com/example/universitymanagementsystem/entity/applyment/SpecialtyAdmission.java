@@ -49,6 +49,9 @@ public class SpecialtyAdmission extends BaseEntity {
     @JoinColumn(name = "department_id")
     private Department department;
 
+    @Column(name = "is_distributed")
+    private Boolean isDistributed;
+
     @Transient
     private Boolean isActive;
 }

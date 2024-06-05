@@ -19,4 +19,5 @@ public class ActiveAdmissionResponseDto {
     private String departmentName;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+    private Boolean isActive;
 }

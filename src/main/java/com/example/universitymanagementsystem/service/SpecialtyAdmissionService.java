@@ -15,4 +15,6 @@ public interface SpecialtyAdmissionService {
     SpecialtyAdmission getById(Long admissionId);
 
     List<SpecialtyAdmission> getAllPlanned();
+
+    List<SpecialtyAdmission> getActiveAndNonDistributed();
 }

@@ -100,4 +100,14 @@ public class SpecialtyAdmissionServiceImpl implements SpecialtyAdmissionService 
         return specialtyAdmissionList;
     }
 
+    @Override
+    public List<SpecialtyAdmission> getActiveAndNonDistributed() {
+        List<SpecialtyAdmission> allActive = admissionRepository.getActiveAndNonDistributed();
+        if (allActive.isEmpty()) {
+            throw new BaseBusinessLogicException("Наборы не объявлены");
+        } else {
+            return allActive;
+        }
+    }
+
 }

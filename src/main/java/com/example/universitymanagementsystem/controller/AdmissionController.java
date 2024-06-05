@@ -89,15 +89,15 @@ public class AdmissionController {
                 );
     }
 
-    @Operation(summary = "Get all open admissions", description = "Get all active admissions with candidates")
-    @GetMapping("/get-active-admission-list")
+    @Operation(summary = "Get all active and where candidates aren't distributed")
+    @GetMapping("/get-all-active")
     @PreAuthorize("hasAnyRole('ADMISSION_COMMISSION')")
     public CommonResponseDto<List<ActiveAdmissionResponseDto>> getAllActive(){
         return  new CommonResponseDto<List<ActiveAdmissionResponseDto>>()
                 .setOk()
                 .setData(
                         activeAdmissionResponseMapper.listEntityToDto(
-                                specialtyAdmissionService.getActiveAdmissions())
+                                specialtyAdmissionService.getActiveAndNonDistributed())
                 );
     }
 

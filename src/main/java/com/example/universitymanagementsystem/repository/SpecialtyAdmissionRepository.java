@@ -42,4 +42,9 @@ public interface SpecialtyAdmissionRepository extends JpaRepository<SpecialtyAdm
             "where s.startDate > :now")
     //just pass LocaDateTime.now()
     List<SpecialtyAdmission> getAllPlanned(LocalDateTime now);
+
+    @Query(value = "select s from specialty_admission  s " +
+            "where (local_datetime between s.startDate and s.endDate) " +
+            " or s.isDistributed = false")
+    List<SpecialtyAdmission> getActiveAndNonDistributed();
 }
