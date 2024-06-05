@@ -2,6 +2,7 @@ package com.example.universitymanagementsystem.controller;
 
 import com.example.universitymanagementsystem.dto.response.*;
 import com.example.universitymanagementsystem.dto.response.ActiveAdmissionResponseDto;
+import com.example.universitymanagementsystem.exception.BaseBusinessLogicException;
 import com.example.universitymanagementsystem.mapper.*;
 import com.example.universitymanagementsystem.service.CandidateService;
 import com.example.universitymanagementsystem.dto.request.CreateAdmissionRequestDto;
@@ -28,9 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/admission")
@@ -109,11 +108,11 @@ public class AdmissionController {
     ) {
         AdmissionDetailsResponseDto admissionDetails =
                 admissionDetailsResponseMapper.entityToDto(specialtyAdmissionService.getById(admissionId));
-
-        List<AdmissionCandidatesResponseDto> admissionCandidatesResponseDtoList =
-                admissionCandidatesResponseMapper.listEntityToDto(candidateService.getAllByAdmissionId(admissionId));
-
-        admissionDetails.setApplicantCandidates(admissionCandidatesResponseDtoList);
+        try {
+            List<AdmissionCandidatesResponseDto> admissionCandidatesResponseDtoList =
+                    admissionCandidatesResponseMapper.listEntityToDto(candidateService.getAllByAdmissionId(admissionId));
+            admissionDetails.setApplicantCandidates(admissionCandidatesResponseDtoList);
+        }catch (BaseBusinessLogicException ignored){}
 
         return new CommonResponseDto<AdmissionDetailsResponseDto>()
                 .setOk()
