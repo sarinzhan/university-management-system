@@ -1,6 +1,7 @@
 package com.example.universitymanagementsystem.controller;
 
 import com.example.universitymanagementsystem.dto.response.*;
+import com.example.universitymanagementsystem.dto.response.ActiveAdmissionResponseDto;
 import com.example.universitymanagementsystem.mapper.*;
 import com.example.universitymanagementsystem.service.CandidateService;
 import com.example.universitymanagementsystem.dto.request.CreateAdmissionRequestDto;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/admission")
@@ -36,9 +38,9 @@ public class AdmissionController {
     private final FacultyAdmissionResponseMapper facultyAdmissionResponseMapper;
     private final AdmissionResponseMapper admissionResponseMapper;
     private final AdmissionDetailsResponseMapper admissionDetailsResponseMapper;
-    private final ApplicantCandidateResponseMapper applicantCandidateResponseMapper;;
+    private final ApplicantCandidateResponseMapper applicantCandidateResponseMapper;
     private final CreateAdmissionRequestMapper createAdmissionRequestMapper;
-
+    private final ActiveAdmissionResponseMapper activeAdmissionResponseMapper;
 
     @Operation(summary = "Get faculty admission",description = "Get faculties where specialty admission is available")
     @GetMapping("/get-faculties")
@@ -73,6 +75,18 @@ public class AdmissionController {
                 .setData(
                         admissionResponseMapper.listEntityToDto(
                                 specialtyAdmissionService.getAllAdmissions())
+                );
+    }
+
+    @Operation(summary = "Get all open admissions", description = "Get all active admissions with candidates")
+    @GetMapping("/get-active-admission-list")
+    @PreAuthorize("hasAnyRole('ADMISSION_COMMISSION')")
+    public CommonResponseDto<List<ActiveAdmissionResponseDto>> getAllActive(){
+        return  new CommonResponseDto<List<ActiveAdmissionResponseDto>>()
+                .setOk()
+                .setData(
+                        activeAdmissionResponseMapper.listEntityToDto(
+                                specialtyAdmissionService.getActiveAdmissions())
                 );
     }
 
