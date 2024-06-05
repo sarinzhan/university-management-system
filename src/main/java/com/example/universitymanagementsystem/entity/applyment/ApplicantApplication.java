@@ -59,8 +59,6 @@ public class ApplicantApplication extends BaseEntity {
 
     private String city;
 
-    private Integer age;
-
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
@@ -72,6 +70,8 @@ public class ApplicantApplication extends BaseEntity {
 
     @Column(name = "last_name")
     private String lastName;
+
+    private String gender;
 
     @Column(name = "is_email_activated")
     private Boolean isEmailActivated;

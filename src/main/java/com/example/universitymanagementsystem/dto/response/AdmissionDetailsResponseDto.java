@@ -17,5 +17,5 @@ public class AdmissionDetailsResponseDto {
     private Integer groupAmount;
     private Integer seatNumber;
     private Integer requiredTestScore;
-    private List<ApplicantCandidateResponseDto> applicantCandidates;
+    private List<AdmissionCandidatesResponseDto> applicantCandidates;
 }

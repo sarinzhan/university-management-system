@@ -20,15 +20,16 @@ import java.util.Optional;
 public class SpecialtyAdmissionServiceImpl implements SpecialtyAdmissionService {
 
     private final SpecialtyAdmissionRepository admissionRepository;
+    private final SpecialtyAdmissionRepository specialtyAdmissionRepository;
 
     private final SpecialtyService specialtyService;
 
     @Override
-    public List<SpecialtyAdmission> getActiveAdmissions(){
+    public List<SpecialtyAdmission> getActiveAdmissions() {
         List<SpecialtyAdmission> allActive = admissionRepository.getAllActive();
-        if(allActive.isEmpty()){
+        if (allActive.isEmpty()) {
             throw new BaseBusinessLogicException("Наборы не объявлены");
-        }else {
+        } else {
             return allActive;
         }
     }
@@ -36,7 +37,7 @@ public class SpecialtyAdmissionServiceImpl implements SpecialtyAdmissionService 
     @Override
     public List<SpecialtyAdmission> getActiveAdmissions(Long facultyId) {
         List<SpecialtyAdmission> allActiveBySpecId = admissionRepository.getAllActive(facultyId);
-        if(allActiveBySpecId.isEmpty()){
+        if (allActiveBySpecId.isEmpty()) {
             throw new BaseBusinessLogicException("Набор не объявлен");
         }
 
@@ -44,7 +45,8 @@ public class SpecialtyAdmissionServiceImpl implements SpecialtyAdmissionService 
     }
 
     @Override
-    public List<SpecialtyAdmission> getAllAdmissions(){
+
+    public List<SpecialtyAdmission> getAllAdmissions() {
         List<SpecialtyAdmission> allAdmissions = admissionRepository.findAll()
                 .stream()
                 .sorted(Comparator.comparing(SpecialtyAdmission::getStartDate))
@@ -55,7 +57,7 @@ public class SpecialtyAdmissionServiceImpl implements SpecialtyAdmissionService 
                 })
                 .toList();
 
-        if (allAdmissions.isEmpty()){
+        if (allAdmissions.isEmpty()) {
             throw new BaseBusinessLogicException("Наборов не объявлялось");
         }
 
@@ -63,25 +65,31 @@ public class SpecialtyAdmissionServiceImpl implements SpecialtyAdmissionService 
     }
 
     @Override
-    public SpecialtyAdmission getAdmissionById(Long admissionId){
-            return admissionRepository.getByAdmissionId(admissionId)
-                    .orElseThrow(() -> new BaseBusinessLogicException("Набора не найден"));
-        }
+    public SpecialtyAdmission getAdmissionById(Long admissionId) {
+        return admissionRepository.getByAdmissionId(admissionId)
+                .orElseThrow(() -> new BaseBusinessLogicException("Набора не найден"));
+    }
 
-        @Override
+
+    @Override
     public Long create(SpecialtyAdmission admission) {
         Specialty specialty = specialtyService.getById(admission.getSpecialty().getId());
         admission.setDepartment(specialty.getDepartment());
         admission.setFaculty(specialty.getDepartment().getFaculty());
 
-        Boolean collision = admissionRepository.isCollision(admission.getStartDate(), admission.getEndDate(),admission.getSpecialty().getId());
-        if(collision){
+        Boolean collision = admissionRepository.isCollision(admission.getStartDate(), admission.getEndDate(), admission.getSpecialty().getId());
+        if (collision) {
             throw new BaseBusinessLogicException("В указанный период времени уже есть набор");
         }
-        try{
+        try {
             return admissionRepository.save(admission).getId();
-        }catch (Exception ex){
-            throw  new BaseBusinessLogicException("Не удалось создать набор");
+        } catch (Exception ex) {
+            throw new BaseBusinessLogicException("Не удалось создать набор");
         }
     }
+    public SpecialtyAdmission getById(Long admissionId){
+        return specialtyAdmissionRepository.findById(admissionId)
+                .orElseThrow(() -> new BaseBusinessLogicException("Набор не найден"));
+    }
+
 }

@@ -33,4 +33,13 @@ public class SpecialtyServiceImpl implements SpecialtyService {
         return specialtyRepository.findById(id)
                 .orElseThrow(() -> new BaseBusinessLogicException("Не удалось найти специальность"));
     }
+
+    @Override
+    public List<Specialty> getAllByFacultyId(Long facultyId) {
+        List<Specialty> specialtyList = specialtyRepository.getAllByFacultyId(facultyId);
+        if(specialtyList.isEmpty()){
+            throw new BaseBusinessLogicException("Не удалось найти специальностей по факультету");
+        }
+        return specialtyList;
+    }
 }

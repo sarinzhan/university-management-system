@@ -14,9 +14,7 @@ public interface AdmissionDetailsResponseMapper {
     @Mappings({
             @Mapping(target = "specialtyName", source = "specialtyAdmission.specialty.name"),
             @Mapping(target = "seatNumber", expression = "java(specialtyAdmission.getGroupAmount() * specialtyAdmission.getGroupCapacity())"),
-            @Mapping(target = "requiredTestScore", source = "specialtyAdmission.minScore"),
-            @Mapping(target = "applicantCandidates", source = "applicantCandidateResponseDto")
+            @Mapping(target = "requiredTestScore", source = "specialtyAdmission.minScore")
     })
-
-    AdmissionDetailsResponseDto entitiesToDto(SpecialtyAdmission specialtyAdmission, List<ApplicantCandidateResponseDto> applicantCandidateResponseDto);
+    AdmissionDetailsResponseDto entityToDto(SpecialtyAdmission specialtyAdmission);
 }

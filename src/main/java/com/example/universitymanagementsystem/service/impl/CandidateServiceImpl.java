@@ -8,7 +8,6 @@ import com.example.universitymanagementsystem.service.CandidateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 
@@ -19,19 +18,15 @@ public class CandidateServiceImpl implements CandidateService {
 
     @Override
     public List<Candidate> getAllActiveByAdmissionId(Long admissionId) {
-        List<Candidate> candidates = candidateRepository.findAllByAdmissionId(admissionId)
+        List<Candidate> candidates = candidateRepository.findAllActiveByAdmissionId(admissionId)
                 .stream()
                 .sorted(Comparator.comparing(Candidate::getTestScore).reversed())
                 .peek(x -> x.setIsRecommended(false))
                 .toList();
         if(candidates.isEmpty()){
-            throw new BaseBusinessLogicException("Кандидаты отсутствуют");
+            throw new BaseBusinessLogicException("Не удалось найти кандидатов по набору");
         }
-        SpecialtyAdmission specialtyAdmission = candidates.get(0).getSpecialtyAdmission();
-        int totalCapacity = specialtyAdmission.getGroupCapacity() * specialtyAdmission.getGroupAmount();
-        for(int i=0;i<totalCapacity && i < candidates.size();i++){
-            candidates.get(i).setIsRecommended(true);
-        }
+        setIsRecom(candidates);
         return candidates;
     }
 
@@ -41,6 +36,24 @@ public class CandidateServiceImpl implements CandidateService {
             return candidateRepository.save(candidate).getId();
         }catch (Exception ex){
             throw new BaseBusinessLogicException("Не удалось добавить кандидата");
+        }
+    }
+
+    @Override
+    public List<Candidate> getAllByAdmissionId(Long admissionId) {
+        List<Candidate> allByAdmissionId = candidateRepository.findAllByAdmissionId(admissionId);
+        if(allByAdmissionId.isEmpty()){
+            throw new BaseBusinessLogicException("Не удалось найти кандидатов по набору");
+        }
+        setIsRecom(allByAdmissionId);
+        return allByAdmissionId;
+    }
+
+    private void setIsRecom(List<Candidate> source){
+        SpecialtyAdmission specialtyAdmission = source.get(0).getSpecialtyAdmission();
+        int totalCapacity = specialtyAdmission.getGroupCapacity() * specialtyAdmission.getGroupAmount();
+        for(int i=0;i<totalCapacity && i < source.size();i++){
+            source.get(i).setIsRecommended(true);
         }
     }
 }

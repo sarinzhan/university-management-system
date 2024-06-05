@@ -7,4 +7,6 @@ import java.util.List;
 public interface SpecialtyService {
     List<Specialty> getAll();
     Specialty getById(Long id);
+
+    List<Specialty> getAllByFacultyId(Long facultyId);
 }

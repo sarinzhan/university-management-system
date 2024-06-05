@@ -4,5 +4,7 @@ public enum UserRoleEnum {
     STUDENT,
     ADMIN,
     ADMISSION_COMMISSION,
-    TEACHER
+    CURRICULUM_DEPARTMENT,
+    TEACHER,
+    HR_DEPARTMENT
 }
