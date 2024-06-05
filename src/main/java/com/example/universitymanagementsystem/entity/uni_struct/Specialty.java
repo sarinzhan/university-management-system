@@ -28,6 +28,9 @@ public class Specialty extends BaseEntity {
     @Column(name = "group_abbreviation", nullable = false)
     private String groupAbbreviation;
 
+    @Column(name = "total_semester", nullable = false)
+    private Integer numberOfSemesters;
+
     public Specialty(Long id,String name) {
         super(id);
         this.name = name;
