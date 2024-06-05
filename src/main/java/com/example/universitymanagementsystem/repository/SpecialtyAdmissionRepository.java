@@ -45,6 +45,6 @@ public interface SpecialtyAdmissionRepository extends JpaRepository<SpecialtyAdm
 
     @Query(value = "select s from specialty_admission  s " +
             "where (local_datetime between s.startDate and s.endDate) " +
-            " or s.isDistributed = false")
+            " or (s.isDistributed = false and s.endDate < local_datetime)")
     List<SpecialtyAdmission> getActiveAndNonDistributed();
 }
