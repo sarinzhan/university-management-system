@@ -44,6 +44,9 @@ public class CandidateDistributionFacadeImpl implements CandidateDistributionSer
         if(admission.getEndDate().isAfter(LocalDateTime.now())){
             throw new BaseBusinessLogicException("Невозможно начать распределение, набор еще не закончен");
         }
+        if(admission.getIsDistributed()){
+            throw new BaseBusinessLogicException("Кандидаты данного набора уже распределены");
+        }
         //check if applicant application is empty
         applicantApplicationService.getByAdmissionId(admissionId)
                 .stream()
@@ -76,6 +79,7 @@ public class CandidateDistributionFacadeImpl implements CandidateDistributionSer
                 distributedStudents.add(candidateDistributionResponseMapper.entityToDto(student));
             }
         }
+        admission.setIsDistributed(true);
         return distributedStudents;
     }
 
