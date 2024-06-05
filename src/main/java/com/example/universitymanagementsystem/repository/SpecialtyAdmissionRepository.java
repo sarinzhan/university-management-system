@@ -37,4 +37,9 @@ public interface SpecialtyAdmissionRepository extends JpaRepository<SpecialtyAdm
             "or :endDate between s.startDate and s.endDate) " +
             "and :specialtyId = s.specialty.id")
     Boolean isCollision(LocalDateTime startDate, LocalDateTime endDate,Long specialtyId);
+
+    @Query(value = "select s from specialty_admission  s " +
+            "where s.startDate > :now")
+    //just pass LocaDateTime.now()
+    List<SpecialtyAdmission> getAllPlanned(LocalDateTime now);
 }

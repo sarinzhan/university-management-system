@@ -21,7 +21,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import jakarta.annotation.security.PermitAll;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,6 +48,7 @@ public class AdmissionController {
     private final AdmissionDetailsResponseMapper admissionDetailsResponseMapper;
     private final ApplicantCandidateResponseMapper applicantCandidateResponseMapper;
     private final AdmissionCandidatesResponseMapper admissionCandidatesResponseMapper;
+
     private final CreateAdmissionRequestMapper createAdmissionRequestMapper;
     private final ActiveAdmissionResponseMapper activeAdmissionResponseMapper;
 
@@ -146,6 +146,17 @@ public class AdmissionController {
                 .setData(candidateDistributionResponseDtoList);
     }
 
+
+    @Operation(summary = "Planned admissions")
+    @GetMapping("/planned")
+    @PreAuthorize("hasAnyRole('ADMISSION_COMMISSION')")
+    public CommonResponseDto<List<AdmissionResponseDto>> getPlanned(){
+        List<SpecialtyAdmission> specialtyAdmissionList =  specialtyAdmissionService.getAllPlanned();
+        List<AdmissionResponseDto> admissionResponseDtoList =  admissionResponseMapper.listEntityToDto(specialtyAdmissionList);
+        return new CommonResponseDto<List<AdmissionResponseDto>>()
+                .setOk()
+                .setData(admissionResponseDtoList);
+    }
 
 
 }

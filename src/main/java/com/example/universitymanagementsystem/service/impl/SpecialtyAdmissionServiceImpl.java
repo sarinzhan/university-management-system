@@ -20,7 +20,6 @@ import java.util.Optional;
 public class SpecialtyAdmissionServiceImpl implements SpecialtyAdmissionService {
 
     private final SpecialtyAdmissionRepository admissionRepository;
-    private final SpecialtyAdmissionRepository specialtyAdmissionRepository;
 
     private final SpecialtyService specialtyService;
 
@@ -88,8 +87,17 @@ public class SpecialtyAdmissionServiceImpl implements SpecialtyAdmissionService 
         }
     }
     public SpecialtyAdmission getById(Long admissionId){
-        return specialtyAdmissionRepository.findById(admissionId)
+        return admissionRepository.findById(admissionId)
                 .orElseThrow(() -> new BaseBusinessLogicException("Набор не найден"));
+    }
+
+    @Override
+    public List<SpecialtyAdmission> getAllPlanned() {
+        List<SpecialtyAdmission> specialtyAdmissionList =  admissionRepository.getAllPlanned(LocalDateTime.now());
+        if(specialtyAdmissionList.isEmpty()){
+            throw new BaseBusinessLogicException("Запланированные наборы отсутствуют");
+        }
+        return specialtyAdmissionList;
     }
 
 }

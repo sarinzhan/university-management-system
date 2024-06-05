@@ -13,4 +13,6 @@ public interface SpecialtyAdmissionService {
     Long create(SpecialtyAdmission admission);
 
     SpecialtyAdmission getById(Long admissionId);
+
+    List<SpecialtyAdmission> getAllPlanned();
 }
