@@ -18,6 +18,7 @@ import com.example.universitymanagementsystem.service.CandidateDistributionServi
 import com.example.universitymanagementsystem.service.SpecialtyAdmissionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.security.PermitAll;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -63,7 +64,7 @@ public class AdmissionController {
     }
 
     @Operation(summary = "Get specialty admission",description = "Get specialties by faculty id where admission is available")
-    @GetMapping("/get/{facultyId}")
+    @GetMapping("/get-specialties/{facultyId}")
     public CommonResponseDto<List<SpecialtyAdmissionResponseDto>> getSpecialtyAdmission(
             @PathVariable Long facultyId
     ){

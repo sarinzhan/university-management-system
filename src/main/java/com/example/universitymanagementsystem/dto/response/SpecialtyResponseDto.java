@@ -14,5 +14,5 @@ public class SpecialtyResponseDto {
     private String departmentName;
     private String degree;
     private String educationForm;
-    private String numberOfSemesters;
+    private Integer numberOfSemesters;
 }
