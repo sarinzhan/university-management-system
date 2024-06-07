@@ -22,5 +22,7 @@ public abstract class BaseIT {
 
     @Autowired
     public MockMvc mockMvc;
+
+    @Value("${test.baseurl}")
     public String BASE_URL;
 }

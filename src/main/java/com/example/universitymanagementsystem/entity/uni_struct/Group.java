@@ -7,7 +7,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
 
-@Entity
+@Entity(name = "groups")
 @Data
 public class Group extends BaseEntity {
     private String name;
