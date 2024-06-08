@@ -8,6 +8,8 @@ import com.example.universitymanagementsystem.service.CurriculumService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CurriculumDisciplineServiceImpl implements CurriculumDisciplineService {
@@ -24,5 +26,16 @@ public class CurriculumDisciplineServiceImpl implements CurriculumDisciplineServ
         }catch (Exception e){
             throw new BaseBusinessLogicException("Не удалось добавить дисциплину к учебному плану (%s)".formatted(curriculumDiscipline.getCurriculum().getIdentifierName()));
         }
+    }
+
+    @Override
+    public List<CurriculumDiscipline> getAllByCurriculumId(Long curriculumId) {
+        List<CurriculumDiscipline> curriculumDisciplineList =
+                curriculumDisciplineRepository.getAllByCurriculumId(curriculumId);
+        if(curriculumDisciplineList.isEmpty()){
+            throw new BaseBusinessLogicException("Не удалось найти план обучения");
+        }
+        return curriculumDisciplineList;
+
     }
 }
