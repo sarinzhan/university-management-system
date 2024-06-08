@@ -3,20 +3,16 @@ package com.example.universitymanagementsystem.service.impl;
 import com.example.universitymanagementsystem.dto.request.LoginRequestDto;
 import com.example.universitymanagementsystem.dto.response.TokenResponseDto;
 import com.example.universitymanagementsystem.exception.BaseBusinessLogicException;
-import com.example.universitymanagementsystem.security.JwtTokenHandler;
+import com.example.universitymanagementsystem.jwt.JwtTokenHandler;
 import com.example.universitymanagementsystem.service.AuthService;
 import com.example.universitymanagementsystem.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.Objects;
 
 @Service

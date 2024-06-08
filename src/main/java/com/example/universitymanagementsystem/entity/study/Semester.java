@@ -33,6 +33,6 @@ public class Semester extends BaseEntity {
     @JoinColumn(name = "curriculum_id", nullable = false)
     private Curriculum curriculum;
 
-    @Column(name = "number")
+    @Column(name = "number", nullable = false)
     private Integer number;
 }
