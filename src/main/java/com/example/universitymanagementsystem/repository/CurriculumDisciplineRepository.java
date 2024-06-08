@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface CurriculumDisciplineRepository extends JpaRepository<CurriculumDiscipline,Long> {\
+public interface CurriculumDisciplineRepository extends JpaRepository<CurriculumDiscipline,Long> {
 
     @Query(value = "select c from curriculum_discipline c " +
             "where c.curriculum.id = :curriculumId")

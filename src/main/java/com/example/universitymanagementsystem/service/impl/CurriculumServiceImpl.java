@@ -8,6 +8,8 @@ import com.example.universitymanagementsystem.service.SpecialtyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CurriculumServiceImpl implements CurriculumService {
@@ -24,9 +26,19 @@ public class CurriculumServiceImpl implements CurriculumService {
             throw new BaseBusinessLogicException("Не удалось сохранить учебный план %s".formatted(curriculum.getIdentifierName()));
         }
     }
+
     @Override
     public Curriculum getById(Long curriculumId) {
         return curriculumRepository.findById(curriculumId)
                 .orElseThrow(() -> new BaseBusinessLogicException("Не удалось найти учебный план"));
+    }
+
+    @Override
+    public List<Curriculum> getAllBySpecialtyId(Long specialtyId, Integer semesterNumber) {
+        List<Curriculum> allBySpecialtyId = curriculumRepository.getAllBySpecialtyId(specialtyId,semesterNumber);
+        if(allBySpecialtyId.isEmpty()){
+            throw new BaseBusinessLogicException("Не удалось найти учебный план");
+        }
+        return allBySpecialtyId;
     }
 }
